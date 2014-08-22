@@ -1,14 +1,9 @@
 #include <Python.h>
 #include "pin.H"
+#include "./python_pin.h"
 #include <strings.h>
 #include <stdlib.h>
 #include <dlfcn.h>
-
-PyObject* module;
-PyObject** hooks_syscall_entry = NULL;
-PyObject** hooks_syscall_exit = NULL;
-void trace_syscall_entry(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOID *v);
-void trace_syscall_exit(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOID* v);
 
 void add_hook(PyObject*** hooks, PyObject* new_hook) {
     PyObject** hooks_list = *hooks;
@@ -19,7 +14,6 @@ void add_hook(PyObject*** hooks, PyObject* new_hook) {
     } else {
         int hook_count;
         for(hook_count=0; hooks_list[hook_count]; hook_count++);
-        printf("Hooks: %d\n", hook_count);
         hooks_list = (PyObject**) realloc(hooks_list, sizeof(PyObject*)*(hook_count+2));
         hooks_list[hook_count] = new_hook;
         hooks_list[hook_count+1] = NULL;
@@ -52,17 +46,30 @@ PyObject* Python_PIN_AddSyscallEntryFunction(PyObject* self, PyObject* args) {
     return Py_BuildValue("O", Py_True);
 }
 
-static PyMethodDef methods[] = {
-    {"AddSyscallEntryFunction",
-        Python_PIN_AddSyscallEntryFunction,
-        METH_VARARGS,
-        "Register a notification function that is called immediately before execution of a system call."},
-    {"AddSyscallExitFunction",
-        Python_PIN_AddSyscallExitFunction,
-        METH_VARARGS,
-        "Register a notification function that is called immediately after execution of a system call."},
-    {NULL, NULL, 0, NULL}
-};
+PyObject* Python_PIN_GetSyscallArgument(PyObject* self, PyObject* args) {
+    PyObject* context;
+    PyObject* std;
+    PyObject* number;
+    PyArg_ParseTuple(args, "O|O|O", &context, &std, &number);
+
+    return Py_BuildValue("I", PIN_GetSyscallArgument((CONTEXT*) *(CONTEXT**)PyInt_AsLong(context), (SYSCALL_STANDARD) *(SYSCALL_STANDARD*)PyInt_AsLong(std), (int) PyInt_AsLong(number)));
+}
+
+PyObject* Python_PIN_GetSyscallReturn(PyObject* self, PyObject* args) {
+    PyObject* context;
+    PyObject* std;
+    PyArg_ParseTuple(args, "O|O", &context, &std);
+
+    return Py_BuildValue("I", PIN_GetSyscallReturn((CONTEXT*) *(CONTEXT**)PyInt_AsLong(context), (SYSCALL_STANDARD) *(SYSCALL_STANDARD*)PyInt_AsLong(std)));
+}
+
+PyObject* Python_PIN_GetSyscallNumber(PyObject* self, PyObject* args) {
+    PyObject* context;
+    PyObject* std;
+    PyArg_ParseTuple(args, "O|O", &context, &std);
+
+    return Py_BuildValue("I", PIN_GetSyscallNumber((CONTEXT*) *(CONTEXT**)PyInt_AsLong(context), (SYSCALL_STANDARD) *(SYSCALL_STANDARD*)PyInt_AsLong(std)));
+}
 
 int main(int argc, char** argv) {
     Py_Initialize();
@@ -75,7 +82,7 @@ int main(int argc, char** argv) {
     Py_InitModule("pin", methods);
     module = PyImport_ImportModule("lel");
     if (module == NULL) {
-        printf("Failed to import :{\n");
+        printf("Failed to load pintool:\n");
         PyErr_Print();
         exit(1);
     }
@@ -95,34 +102,26 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-void trace_syscall_entry(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOID *v) {
-    PyObject* syscall_num = PyInt_FromLong(PIN_GetSyscallNumber(ctxt, std));
-    PyObject* syscall_args = PyTuple_New(4);
-    PyTuple_SetItem(syscall_args, 0, PyInt_FromLong(PIN_GetSyscallArgument(ctxt, std, 0)));
-    PyTuple_SetItem(syscall_args, 1, PyInt_FromLong(PIN_GetSyscallArgument(ctxt, std, 1)));
-    PyTuple_SetItem(syscall_args, 2, PyInt_FromLong(PIN_GetSyscallArgument(ctxt, std, 2)));
-    PyTuple_SetItem(syscall_args, 3, PyInt_FromLong(PIN_GetSyscallArgument(ctxt, std, 3)));
-
+void trace_syscall_exit(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOID *v) {
     PyObject* arguments = PyTuple_New(2);
-    PyTuple_SetItem(arguments, 0, syscall_num);
-    PyTuple_SetItem(arguments, 1, syscall_args);
+    PyTuple_SetItem(arguments, 0, PyInt_FromLong((long int)&ctxt));
+    PyTuple_SetItem(arguments, 1, PyInt_FromLong((long int)&std));
 
     for (int i=0; hooks_syscall_entry[i]; i++) {
-        if (PyObject_CallObject(hooks_syscall_entry[i], arguments) == NULL) {
+        if (PyObject_CallObject(hooks_syscall_exit[i], arguments) == NULL) {
             PyErr_Print();
             exit(1);
         }
     }
 }
 
-void trace_syscall_exit(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOID* v) {
-    PyObject* return_value = PyInt_FromLong(PIN_GetSyscallReturn(ctxt, std));
+void trace_syscall_entry(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOID *v) {
+    PyObject* arguments = PyTuple_New(2);
+    PyTuple_SetItem(arguments, 0, PyInt_FromLong((long int)&ctxt));
+    PyTuple_SetItem(arguments, 1, PyInt_FromLong((long int)&std));
 
-    PyObject* arguments = PyTuple_New(1);
-    PyTuple_SetItem(arguments, 0, return_value);
-
-    for (int i=0; hooks_syscall_exit[i]; i++) {
-        if (PyObject_CallObject(hooks_syscall_exit[i], arguments) == NULL) {
+    for (int i=0; hooks_syscall_entry[i]; i++) {
+        if (PyObject_CallObject(hooks_syscall_entry[i], arguments) == NULL) {
             PyErr_Print();
             exit(1);
         }
