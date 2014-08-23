@@ -71,6 +71,27 @@ PyObject* Python_PIN_GetSyscallNumber(PyObject* self, PyObject* args) {
     return Py_BuildValue("I", PIN_GetSyscallNumber((CONTEXT*) *(CONTEXT**)PyInt_AsLong(context), (SYSCALL_STANDARD) *(SYSCALL_STANDARD*)PyInt_AsLong(std)));
 }
 
+PyObject* Python_PIN_SetSyscallArgument(PyObject* self, PyObject* args) {
+    PyObject* context;
+    PyObject* std;
+    PyObject* number;
+    PyObject* value;
+    PyArg_ParseTuple(args, "O|O|O|O", &context, &std, &number, &value);
+
+    PIN_SetSyscallArgument((CONTEXT*) *(CONTEXT**)PyInt_AsLong(context), (SYSCALL_STANDARD) *(SYSCALL_STANDARD*)PyInt_AsLong(std), (int) PyInt_AsLong(number), (ADDRINT) PyInt_AsLong(value));
+    return Py_BuildValue("O", Py_None);
+}
+
+PyObject* Python_PIN_SetSyscallNumber(PyObject* self, PyObject* args) {
+    PyObject* context;
+    PyObject* std;
+    PyObject* value;
+    PyArg_ParseTuple(args, "O|O|O", &context, &std, &value);
+
+    PIN_SetSyscallNumber((CONTEXT*) *(CONTEXT**)PyInt_AsLong(context), (SYSCALL_STANDARD) *(SYSCALL_STANDARD*)PyInt_AsLong(std), (ADDRINT) PyInt_AsLong(value));
+    return Py_BuildValue("O", Py_None);
+}
+
 int main(int argc, char** argv) {
     Py_Initialize();
     PyRun_SimpleString("import sys; sys.path.append('.')\n");
