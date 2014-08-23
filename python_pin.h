@@ -1,6 +1,7 @@
 PyObject* module;
 PyObject** hooks_syscall_entry = NULL;
 PyObject** hooks_syscall_exit = NULL;
+void initialize_pin_module();
 void hard_trace_syscall_entry(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOID *v);
 void trace_syscall_entry(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOID *v);
 void trace_syscall_exit(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOID* v);
@@ -11,6 +12,7 @@ PyObject* Python_PIN_GetSyscallArgument(PyObject* self, PyObject* args);
 PyObject* Python_PIN_SetSyscallArgument(PyObject* self, PyObject* args);
 PyObject* Python_PIN_GetSyscallNumber(PyObject* self, PyObject* args);
 PyObject* Python_PIN_SetSyscallNumber(PyObject* self, PyObject* args);
+PyObject* PrintString(PyObject* self, PyObject* args);
 
 static PyMethodDef methods[] = {
     {"AddSyscallEntryFunction",
