@@ -4,7 +4,7 @@ python-pin
 Python bindings for pin.
 
 
-##Install Instructions
+###Install Instructions
 
 1 Install Python-Dev via apt-get istall python-dev
 
