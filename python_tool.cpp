@@ -21,6 +21,35 @@ void add_hook(PyObject*** hooks, PyObject* new_hook) {
     *hooks = hooks_list;
 }
 
+PyObject* Python_RTN_InsertCall(PyObject* self, PyObject* args) {
+    /*PyObject* rtn;
+    PyObject* callback;
+    PyObject* action;
+    PyObject* num_arguments;*/
+
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_RTN_AddInstrumentFunction(PyObject* self, PyObject* args) {
+    PyObject* callback = (PyObject*) malloc(sizeof(PyObject));
+    PyArg_ParseTuple(args, "O", &callback);
+
+    if (!PyCallable_Check(callback)) {
+        return Py_BuildValue("O", Py_False);
+    }
+
+    add_hook(&hooks_instrument_function, callback);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_RTN_Name(PyObject* self, PyObject* args) {
+    PyObject* rtn;
+    PyArg_ParseTuple(args, "O", &rtn);
+
+    RTN* temp_rtn = (RTN*) PyInt_AsLong(rtn);
+    return Py_BuildValue("s", RTN_Name(*temp_rtn).c_str());
+}
+
 PyObject* Python_PIN_AddSyscallExitFunction(PyObject* self, PyObject* args) {
     PyObject* callback = (PyObject*) malloc(sizeof(PyObject));
     PyArg_ParseTuple(args, "O", &callback);
@@ -91,6 +120,191 @@ PyObject* Python_PIN_SetSyscallNumber(PyObject* self, PyObject* args) {
     return Py_BuildValue("O", Py_None);
 }
 
+// ------------------- auto generated
+PyObject* Python_IMG_Next(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_Prev(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_Invalid(PyObject* self, PyObject* args) {
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_Valid(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_SecHead(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_SecTail(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_RegsymHead(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_Entry(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_Name(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("s", IMG_Name(img_object).c_str());
+}
+
+PyObject* Python_IMG_Gp(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_LoadOffset(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_LowAddress(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_HighAddress(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_StartAddress(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_SizeMapped(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_Type(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_IsMainExecutable(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_Id(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_FindImgById(PyObject* self, PyObject* args) {
+    PyObject* id;
+    PyArg_ParseTuple(args, "O", &id);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_FindByAddress(PyObject* self, PyObject* args) {
+    PyObject* address;
+    PyArg_ParseTuple(args, "O", &address);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_AddInstrumentFunction(PyObject* self, PyObject* args) {
+    PyObject* callback;
+    PyObject* v;
+    PyArg_ParseTuple(args, "O|O", &callback, &v);
+
+    if (!PyCallable_Check(callback)) {
+        return Py_BuildValue("O", Py_False);
+    }
+
+    add_hook(&hooks_img_load, callback);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_AddUnloadFunction(PyObject* self, PyObject* args) {
+    PyObject* callback;
+    PyObject* v;
+    PyArg_ParseTuple(args, "O|O", &callback, &v);
+
+    if (!PyCallable_Check(callback)) {
+        return Py_BuildValue("O", Py_False);
+    }
+
+    add_hook(&hooks_img_unload, callback);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_Open(PyObject* self, PyObject* args) {
+    PyObject* filename;
+    PyArg_ParseTuple(args, "O", &filename);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_IMG_Close(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_APP_ImgHead(PyObject* self, PyObject* args) {
+    return Py_BuildValue("O", Py_True);
+}
+
+PyObject* Python_APP_ImgTail(PyObject* self, PyObject* args) {
+    return Py_BuildValue("O", Py_True);
+}
+
+// ------------------- auto generated
+
 int main(int argc, char** argv) {
     Py_Initialize();
     PyRun_SimpleString("import sys; sys.path.append('.')\n");
@@ -99,7 +313,16 @@ int main(int argc, char** argv) {
         exit(1);
     }
 
-    Py_InitModule("pin", methods);
+    PyObject* pin_module = Py_InitModule("pin", methods);
+    if (pin_module == NULL) {
+        printf("Failed to initialize internal pin module\n");
+        PyErr_Print();
+        exit(1);
+    }
+
+    PyModule_AddIntConstant(pin_module, "IPOINT_BEFORE", IPOINT_BEFORE);
+    PyModule_AddIntConstant(pin_module, "IPOINT_AFTER", IPOINT_AFTER);
+
     module = PyImport_ImportModule("lel");
     if (module == NULL) {
         printf("Failed to load pintool:\n");
@@ -108,11 +331,23 @@ int main(int argc, char** argv) {
     }
 
     if (hooks_syscall_entry) {
-        PIN_AddSyscallEntryFunction(trace_syscall_entry, 0);
+        PIN_AddSyscallEntryFunction(SyscallEntry, 0);
     }
 
     if (hooks_syscall_exit) {
-        PIN_AddSyscallEntryFunction(trace_syscall_exit, 0);
+        PIN_AddSyscallEntryFunction(SyscallExit, 0);
+    }
+
+    if (hooks_instrument_function) {
+        RTN_AddInstrumentFunction(InstrumentFunction, 0);
+    }
+
+    if (hooks_img_load) {
+        IMG_AddInstrumentFunction(ImageLoad, 0);
+    }
+
+    if (hooks_img_unload) {
+        IMG_AddUnloadFunction(ImageUnload, 0);
     }
 
     PIN_StartProgram();
@@ -121,7 +356,19 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-void trace_syscall_exit(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOID *v) {
+void InstrumentFunction(RTN rtn, VOID *v) {
+    PyObject* arguments = PyTuple_New(1);
+    PyTuple_SetItem(arguments, 0, PyInt_FromLong((long int)&rtn));
+
+    for (int i=0; hooks_instrument_function[i]; i++) {
+        if (PyObject_CallObject(hooks_instrument_function[i], arguments) == NULL) {
+            PyErr_Print();
+            exit(1);
+        }
+    }
+}
+
+void SyscallExit(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOID *v) {
     PyObject* arguments = PyTuple_New(2);
     PyTuple_SetItem(arguments, 0, PyInt_FromLong((long int)&ctxt));
     PyTuple_SetItem(arguments, 1, PyInt_FromLong((long int)&std));
@@ -134,7 +381,7 @@ void trace_syscall_exit(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD st
     }
 }
 
-void trace_syscall_entry(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOID *v) {
+void SyscallEntry(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOID *v) {
     PyObject* arguments = PyTuple_New(2);
     PyTuple_SetItem(arguments, 0, PyInt_FromLong((long int)&ctxt));
     PyTuple_SetItem(arguments, 1, PyInt_FromLong((long int)&std));
@@ -147,3 +394,26 @@ void trace_syscall_entry(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD s
     }
 }
 
+void ImageLoad(IMG img, VOID *v) {
+    PyObject* arguments = PyTuple_New(1);
+    PyTuple_SetItem(arguments, 0, PyInt_FromLong((long int)&img));
+
+    for (int i=0; hooks_img_load[i]; i++) {
+        if (PyObject_CallObject(hooks_img_load[i], arguments) == NULL) {
+            PyErr_Print();
+            exit(1);
+        }
+    }
+}
+
+void ImageUnload(IMG img, VOID* v) {
+    PyObject* arguments = PyTuple_New(1);
+    PyTuple_SetItem(arguments, 0, PyInt_FromLong((long int)&img));
+
+    for (int i=0; hooks_img_unload[i]; i++) {
+        if (PyObject_CallObject(hooks_img_unload[i], arguments) == NULL) {
+            PyErr_Print();
+            exit(1);
+        }
+    }
+}
