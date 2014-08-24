@@ -3,6 +3,11 @@ python-pin
 
 Python bindings for pin.
 
+#TODO
+
+1. Finish current sub groups
+2. Split into multiple files and master pin's makefile schema
+3. Continue expanding Pin Python's functionality
 
 ###Install Instructions
 
