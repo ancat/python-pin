@@ -1,4 +1,5 @@
-#include </usr/include/python2.7/Python.h>
+#include <Python.h>
+//#include </usr/include/python2.7/Python.h>
 #include "pin.H"
 #include "IMG.h"
 #include "RTN.h"
