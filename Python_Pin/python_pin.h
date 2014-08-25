@@ -7,6 +7,7 @@ PyObject** hooks_syscall_exit = NULL;
 PyObject** hooks_instrument_function = NULL;
 PyObject** hooks_img_load = NULL;
 PyObject** hooks_img_unload = NULL;
+PyObject** hooks_trace_instrument = NULL;
 void initialize_pin_module();
 
 void add_hook(PyObject*** hooks, PyObject* new_hook);
@@ -15,7 +16,7 @@ void SyscallEntry(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOI
 void SyscallExit(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOID* v);
 PyObject* Python_PIN_AddSyscallExitFunction(PyObject* self, PyObject* args);
 PyObject* Python_PIN_AddSyscallEntryFunction(PyObject* self, PyObject* args);
-
+PyObject* Python_TRACE_AddInstrumentFunction(PyObject* self, PyObject* args) ;
 
 void InstrumentFunction(RTN rtn, VOID *v);
 PyObject* Python_RTN_AddInstrumentFunction(PyObject* self, PyObject* args);
@@ -28,7 +29,7 @@ typedef struct rtn_hook {
 
 void ImageLoad(IMG img, VOID *v);
 void ImageUnload(IMG img, VOID *v);
-
+void Trace(TRACE trace, VOID *v);
 
 static PyMethodDef methods[] = {
     {"AddSyscallEntryFunction",
@@ -176,6 +177,26 @@ static PyMethodDef methods[] = {
         Python_APP_ImgTail,
         METH_VARARGS,
         "The last image loaded into memory"},
+    {"TRACE_Address",
+        Python_TRACE_Address,
+        METH_VARARGS,
+        "Returns Address of trace"
+    },
+    { "TRACE_BblHead",
+        Python_TRACE_BblHead,
+        METH_VARARGS,
+        "Returns reference to first basic block in trace"
+    },
+    { "TRACE_AddInstrumentFunction",
+        Python_TRACE_AddInstrumentFunction,
+        METH_VARARGS,
+        "Add trace to program"
+    },
     {NULL, NULL, 0, NULL}
 };
 #endif
+
+    // {"BBL_Address",
+    //     Python_BBL_Address,
+    //     METH_VARARGS,
+    //     "Get first address of a basic block"},

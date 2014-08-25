@@ -96,6 +96,9 @@ $(OBJDIR)RTN$(OBJ_SUFFIX): RTN.cpp RTN.h
 $(OBJDIR)SYS$(OBJ_SUFFIX): SYS.cpp SYS.h
 	$(CC) $(TOOL_CXXFLAGS) $(COMP_OBJ)$@ $< -lpython2.7 -I/usr/include/python2.7 -rdynamic
 
+$(OBJDIR)TRACE$(OBJ_SUFFIX): TRACE.cpp TRACE.h
+	$(CC) $(TOOL_CXXFLAGS) $(COMP_OBJ)$@ $< -lpython2.7 -I/usr/include/python2.7 -rdynamic
+
 # Build the tool as a dll (shared object).
-$(OBJDIR)Python_Pin$(PINTOOL_SUFFIX): $(OBJDIR)Python_Pin$(OBJ_SUFFIX) $(OBJDIR)IMG$(OBJ_SUFFIX) IMG.h $(OBJDIR)RTN$(OBJ_SUFFIX) RTN.h $(OBJDIR)SYS$(OBJ_SUFFIX) SYS.h 
+$(OBJDIR)Python_Pin$(PINTOOL_SUFFIX): $(OBJDIR)Python_Pin$(OBJ_SUFFIX) $(OBJDIR)IMG$(OBJ_SUFFIX) IMG.h $(OBJDIR)RTN$(OBJ_SUFFIX) RTN.h $(OBJDIR)SYS$(OBJ_SUFFIX) SYS.h $(OBJDIR)TRACE$(OBJ_SUFFIX) TRACE.h
 	$(LINKER) $(TOOL_LDFLAGS_NOOPT) $(LINK_EXE)$@ $(^:%.h=) $(TOOL_LPATHS) $(TOOL_LIBS) -lpython2.7 -I/usr/include/python2.7 -rdynamic

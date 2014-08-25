@@ -4,6 +4,7 @@
 #include "IMG.h"
 #include "RTN.h"
 #include "SYS.h"
+#include "TRACE.h"
 #include "./python_pin.h"
 #include <strings.h>
 #include <stdlib.h>
@@ -25,6 +26,20 @@ void add_hook(PyObject*** hooks, PyObject* new_hook) {
 
     *hooks = hooks_list;
 }
+
+
+PyObject* Python_TRACE_AddInstrumentFunction(PyObject* self, PyObject* args) {
+    PyObject* callback;
+    PyObject* v;
+    PyArg_ParseTuple(args, "O|O", &callback, &v);
+
+    if (!PyCallable_Check(callback)) {
+        return Py_BuildValue("O", Py_False);
+    }
+
+    add_hook(&hooks_trace_instrument, callback);
+    return Py_BuildValue("O", Py_True);
+} 
 
 PyObject* Python_IMG_AddInstrumentFunction(PyObject* self, PyObject* args) {
     PyObject* callback;
@@ -136,10 +151,27 @@ int main(int argc, char** argv) {
         IMG_AddUnloadFunction(ImageUnload, 0);
     }
 
+    if (hooks_trace_instrument) {
+        TRACE_AddInstrumentFunction(Trace, 0);
+    }
+
     PIN_StartProgram();
 
     Py_Finalize();
     return 0;
+}
+
+void Trace(TRACE trace, VOID *v){
+    PyObject* arguments = PyTuple_New(1);
+    PyTuple_SetItem(arguments, 0, PyInt_FromLong((long int)&trace));
+
+    for (int i=0; hooks_trace_instrument[i]; i++) {
+        if (PyObject_CallObject(hooks_trace_instrument[i], arguments) == NULL) {
+            PyErr_Print();
+            exit(1);
+        }
+    }
+    return;
 }
 
 void InstrumentFunction(RTN rtn, VOID *v) {
