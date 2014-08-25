@@ -4,29 +4,6 @@
 #include <stdlib.h>
 #include "IMG.h"
 
-
-// void add_hook(PyObject*** hooks, PyObject* new_hook);// {
-//     PyObject** hooks_list = *hooks;
-//     if (hooks_list == NULL) {
-//         hooks_list = (PyObject**) malloc(sizeof(PyObject*)*2);
-//         hooks_list[0] = new_hook;
-//         hooks_list[1] = NULL;
-//     } else {
-//         int hook_count;
-//         for(hook_count=0; hooks_list[hook_count]; hook_count++);
-//         hooks_list = (PyObject**) realloc(hooks_list, sizeof(PyObject*)*(hook_count+2));
-//         hooks_list[hook_count] = new_hook;
-//         hooks_list[hook_count+1] = NULL;
-//     }
-
-//     *hooks = hooks_list;
-// }
-// PyObject** hooks_syscall_entry = NULL;
-// PyObject** hooks_syscall_exit = NULL;
-// PyObject** hooks_instrument_function = NULL;
-// PyObject** hooks_img_load = NULL;
-// PyObject** hooks_img_unload = NULL;
-// ------------------- auto generated
 PyObject* Python_IMG_Next(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
@@ -182,6 +159,4 @@ PyObject* Python_APP_ImgHead(PyObject* self, PyObject* args) {
 PyObject* Python_APP_ImgTail(PyObject* self, PyObject* args) {
     return Py_BuildValue("O", Py_True);
 }
-
-// ------------------- auto generated
 
