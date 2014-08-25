@@ -9,13 +9,16 @@ Python bindings for pin.
 2. Split into multiple files and master pin's makefile schema
 3. Continue expanding Pin Python's functionality
 
-###Install Instructions
+#Build Instructions
 
-1. Install Python-Dev via apt-get istall python-dev
-2. Copy entire Python_Pin directory into ~/pin/source/tools
-3. Enter Python_Pin directory and type make
-4. Locate "unistd_64.h" and change directory in lel.py accordignly
-5. Run pin with your newly created Python_Pin.so tool
+Copy the entire directory into ~/pin/source/tools
+
+Type make 
+
+When make completes run ../../../pin -t obj-intel64/Python_Pin.so -- /bin/ls and ensure the output is correct
+
+Enjoy!
+
 
 #Current Issues
 
