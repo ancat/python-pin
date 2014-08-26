@@ -177,10 +177,17 @@ static PyMethodDef methods[] = {
         Python_APP_ImgTail,
         METH_VARARGS,
         "The last image loaded into memory"},
+
+    /* TRACE */
     {"TRACE_Address",
         Python_TRACE_Address,
         METH_VARARGS,
         "Returns Address of trace"
+    },
+    {"TRACE_Original",
+        Python_TRACE_Original,
+        METH_VARARGS,
+        "Whether the TRACE data structure has been instrumented or optimized since it was created"
     },
     { "TRACE_BblHead",
         Python_TRACE_BblHead,
@@ -192,11 +199,124 @@ static PyMethodDef methods[] = {
         METH_VARARGS,
         "Add trace to program"
     },
+    { "TRACE_InsertIfCall",
+        Python_TRACE_InsertIfCall,
+        METH_VARARGS,
+        "Add trace to program"
+    },
+    { "TRACE_InsertThenCall",
+        Python_TRACE_InsertThenCall,
+        METH_VARARGS,
+        "Add trace to program"
+    },
+    { "TRACE_BblTail",
+        Python_TRACE_BblTail,
+        METH_VARARGS,
+        "last bbl of trace"
+    },
+    { "TRACE_Size",
+        Python_TRACE_Size,
+        METH_VARARGS,
+        "returns the original source footprint of the given trace"
+    },
+    { "TRACE_Rtn",
+        Python_TRACE_Rtn,
+        METH_VARARGS,
+        "Add trace to program"
+    },
+    { "TRACE_HasFallThrough",
+        Python_TRACE_HasFallThrough,
+        METH_VARARGS,
+        "Add trace to program"
+    },
+    { "TRACE_NumBbl",
+        Python_TRACE_NumBbl,
+        METH_VARARGS,
+        "Add trace to program"
+    },
+    { "TRACE_NumIns",
+        Python_TRACE_NumIns,
+        METH_VARARGS,
+        "Add trace to program"
+    },
+    { "TRACE_StubSize",
+        Python_TRACE_StubSize,
+        METH_VARARGS,
+        "Add trace to program"
+    },
+     { "TRACE_InsertCall",
+        Python_TRACE_InsertCall,
+        METH_VARARGS,
+        "Add trace to program"
+    },
+
+    /* BBL */
+    {"BBL_MoveAllAttributes",
+        Python_BBL_MoveAllAttributes,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"BBL_NumIns",
+        Python_BBL_NumIns,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"BBL_InsHead",
+        Python_BBL_InsHead,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"BBL_InsTail",
+        Python_BBL_InsTail,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"BBL_Next",
+        Python_BBL_Next,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"BBL_Prev",
+        Python_BBL_Valid,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"BBL_Original",
+        Python_BBL_Original,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"BBL_Address",
+        Python_BBL_Address,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"BBL_Size",
+        Python_BBL_Size,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"BBL_InsertCall",
+        Python_BBL_InsertCall,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"BBL_InsertIfCall",
+        Python_BBL_InsertIfCall,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"BBL_InsertThenCall",
+        Python_BBL_InsertThenCall,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"BBL_HasFallThrough",
+        Python_BBL_HasFallThrough,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
     {NULL, NULL, 0, NULL}
 };
 #endif
 
-    // {"BBL_Address",
-    //     Python_BBL_Address,
-    //     METH_VARARGS,
-    //     "Get first address of a basic block"},

@@ -19,12 +19,13 @@ def debug_entry(ctxt, std):
 pin.AddSyscallEntryFunction(debug_entry)
 pin.AddSyscallExitFunction(trace_syscall_exit)
 
-# TRACE TEST 
+#TRACE TEST 
 # def trace_syscall_exit(trace_addr):
-#     # Gets the base of the program trace
-#     ctxt = pin.TRACE_BblHead(trace_addr)
-#     # Gets first basic block in the trace
-#     sys.stdout.write("Basic Block @ %x\n" % (ctxt))#pin.bbl_addr(ctxt))
-#     return
+# 	# Gets the base of the program trace
+# 	# ctxt = pin.TRACE_BblTail(trace_addr)
+# 	# Gets first basic block in the trace
+# 	# sys.stdout.write("Basic Block @ %x\n" % (ctxt))#pin.bbl_addr(ctxt))
+# 	sys.stdout.write("Basic Block @ %x\n" % pin.TRACE_NumIns(trace_addr))
+# 	return
 
 # pin.TRACE_AddInstrumentFunction(trace_syscall_exit)
