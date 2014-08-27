@@ -8,6 +8,7 @@ PyObject** hooks_instrument_function = NULL;
 PyObject** hooks_img_load = NULL;
 PyObject** hooks_img_unload = NULL;
 PyObject** hooks_trace_instrument = NULL;
+
 void initialize_pin_module();
 
 void add_hook(PyObject*** hooks, PyObject* new_hook);
@@ -277,7 +278,7 @@ static PyMethodDef methods[] = {
         "Move all attributes from one BBL to another"
     },
     {"BBL_Prev",
-        Python_BBL_Valid,
+        Python_BBL_Prev,
         METH_VARARGS,
         "Move all attributes from one BBL to another"
     },
@@ -321,6 +322,298 @@ static PyMethodDef methods[] = {
      METH_VARARGS,
      "True if bbl is not BBL_INVALID()"
     },
+        /*AUTO GENERATED SKELETONS*/
+    {"INS_Category",
+        Python_INS_Category,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_Extension",
+        Python_INS_Extension,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_MemoryOperandSize",
+        Python_INS_MemoryOperandSize,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_MemoryWriteSize",
+        Python_INS_MemoryWriteSize,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_GetPredicate",
+        Python_INS_GetPredicate,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_MemoryReadSize",
+        Python_INS_MemoryReadSize,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsMemoryRead",
+        Python_INS_IsMemoryRead,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsMemoryWrite",
+        Python_INS_IsMemoryWrite,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_HasMemoryRead2",
+        Python_INS_HasMemoryRead2,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_HasFallThrough",
+        Python_INS_HasFallThrough,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsLea",
+        Python_INS_IsLea,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsNop",
+        Python_INS_IsNop,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"OPCODE_StringShort",
+        Python_OPCODE_StringShort,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_Mnemonic",
+        Python_INS_Mnemonic,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsBranch",
+        Python_INS_IsBranch,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsDirectBranch",
+        Python_INS_IsDirectBranch,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsDirectCall",
+        Python_INS_IsDirectCall,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsDirectBranchOrCall",
+        Python_INS_IsDirectBranchOrCall,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsBranchOrCall",
+        Python_INS_IsBranchOrCall,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_Stutters",
+        Python_INS_Stutters,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsCall",
+        Python_INS_IsCall,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsProcedureCall",
+        Python_INS_IsProcedureCall,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsRet",
+        Python_INS_IsRet,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsSysret",
+        Python_INS_IsSysret,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsPrefetch",
+        Python_INS_IsPrefetch,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsAtomicUpdate",
+        Python_INS_IsAtomicUpdate,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsIndirectBranchOrCall",
+        Python_INS_IsIndirectBranchOrCall,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_RegR",
+        Python_INS_RegR,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_RegW",
+        Python_INS_RegW,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_Opcode",
+        Python_INS_Opcode,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"CATEGORY_StringShort",
+        Python_CATEGORY_StringShort,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"EXTENSION_StringShort",
+        Python_EXTENSION_StringShort,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_MaxNumRRe",
+        Python_INS_MaxNumRRe,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_MaxNumWRe",
+        Python_INS_MaxNumWRe,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_RegRContain",
+        Python_INS_RegRContain,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_RegWContain",
+        Python_INS_RegWContain,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsStackRead",
+        Python_INS_IsStackRead,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsStackWrite",
+        Python_INS_IsStackWrite,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsIpRelRead",
+        Python_INS_IsIpRelRead,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsIpRelWrite",
+        Python_INS_IsIpRelWrite,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsPredicated",
+        Python_INS_IsPredicated,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsOriginal",
+        Python_INS_IsOriginal,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_Disassemble",
+        Python_INS_Disassemble,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_MemoryOperandCount",
+        Python_INS_MemoryOperandCount,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_OperandIsAddressGenerator",
+        Python_INS_OperandIsAddressGenerator,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_MemoryOperandIsRead",
+        Python_INS_MemoryOperandIsRead,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_MemoryOperandIsWritten",
+        Python_INS_MemoryOperandIsWritten,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_IsSyscall",
+        Python_INS_IsSyscall,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_SyscallStd",
+        Python_INS_SyscallStd,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_Rtn",
+        Python_INS_Rtn,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_Next",
+        Python_INS_Next,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_Prev",
+        Python_INS_Prev,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_Invalid",
+        Python_INS_Invalid,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_Valid",
+        Python_INS_Valid,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_Address",
+        Python_INS_Address,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_Size",
+        Python_INS_Size,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_DirectBranchOrCallTargetAddress",
+        Python_INS_DirectBranchOrCallTargetAddress,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+    {"INS_NextAddress",
+        Python_INS_NextAddress,
+        METH_VARARGS,
+        "Move all attributes from one BBL to another"
+    },
+
     {NULL, NULL, 0, NULL}
 };
 #endif

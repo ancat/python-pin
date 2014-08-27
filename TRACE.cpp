@@ -113,11 +113,15 @@ PyObject* Python_TRACE_InsertCall(PyObject* self, PyObject* args){
 
 /************ BBL STUFF ******************/
 
-/* NOT WORKING */
+/* VERIFIED */
 PyObject* Python_BBL_MoveAllAttributes(PyObject* self, PyObject* args) {
-    PyObject* trace;
-    PyArg_ParseTuple(args, "O",&trace);
-    return Py_BuildValue("O", Py_True); 
+    PyObject* bbl_src, * bbl_dest;
+    PyArg_ParseTuple(args, "L|L", &bbl_src, &bbl_dest);
+    BBL src = *(BBL *) bbl_src;
+    BBL dest = *(BBL *) bbl_dest;
+  
+    BBL_MoveAllAttributes(src, dest);
+    return Py_BuildValue("O", Py_None); 
 }
 
 /* VERIFIED */
@@ -140,25 +144,32 @@ PyObject* Python_BBL_InsHead(PyObject* self, PyObject* args) {
     PyArg_ParseTuple(args, "O",&trace);
     return Py_BuildValue("O", Py_True); 
 }
-/* NOT WORKING */
+
+/*NEED TO IMPLEMENT INS FIRST */
 PyObject* Python_BBL_InsTail(PyObject* self, PyObject* args) {
     PyObject* trace;
     PyArg_ParseTuple(args, "O",&trace);
     return Py_BuildValue("O", Py_True); 
 }
 
-/* NOT WORKING */
+/* VERIFIED*/
 PyObject* Python_BBL_Next(PyObject* self, PyObject* args) {
     PyObject* trace;
     PyArg_ParseTuple(args, "O",&trace);
-    return Py_BuildValue("O", Py_True); 
+    BBL *need  = (BBL*) malloc(sizeof(BBL));
+
+    *need = BBL_Next(*(BBL*) PyInt_AsLong(trace));
+    return Py_BuildValue("L", need);
 }
 
-/* NOT WORKING */
+/* VERFIED */
 PyObject* Python_BBL_Prev(PyObject* self, PyObject* args) {
     PyObject* trace;
-    PyArg_ParseTuple(args, "O",&trace);//BBL_INVALID() 
-    return Py_BuildValue("O", Py_True);//BBL_IN); 
+    PyArg_ParseTuple(args, "O",&trace);
+    BBL* prev  = (BBL*) malloc(sizeof(BBL));
+
+    *prev = BBL_Prev(*(BBL*) PyInt_AsLong(trace));
+    return Py_BuildValue("L", prev);
 }
 
 /* VERIFIED */
