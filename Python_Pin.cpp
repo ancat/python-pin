@@ -106,6 +106,7 @@ PyObject* Python_PIN_AddSyscallEntryFunction(PyObject* self, PyObject* args) {
 }
 
 
+KNOB<string> KnobPythonModule(KNOB_MODE_WRITEONCE, "pintool", "m", "", "the python pintool to import");
 int main(int argc, char** argv) {
     Py_Initialize();
     PyRun_SimpleString("import sys; sys.path.append('.')\n");
@@ -124,12 +125,15 @@ int main(int argc, char** argv) {
     PyModule_AddIntConstant(pin_module, "IPOINT_BEFORE", IPOINT_BEFORE);
     PyModule_AddIntConstant(pin_module, "IPOINT_AFTER", IPOINT_AFTER);
 
-    module = PyImport_ImportModule("lel");
-    if (module == NULL) {
-        printf("Failed to load pintool:\n");
-        PyErr_Print();
+    const char* filename = KnobPythonModule.Value().c_str();
+    FILE* tool = fopen(filename, "r");
+    if (tool == NULL) {
+        perror("fopen");
         exit(1);
     }
+
+    PyRun_SimpleFile(tool, filename);
+    fclose(tool);
 
     if (hooks_syscall_entry) {
         PIN_AddSyscallEntryFunction(SyscallEntry, 0);
