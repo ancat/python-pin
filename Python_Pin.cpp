@@ -2,6 +2,7 @@
 //#include </usr/include/python2.7/Python.h>
 #include "pin.H"
 #include "IMG.h"
+#include "INS.h"
 #include "RTN.h"
 #include "SYS.h"
 #include "TRACE.h"
