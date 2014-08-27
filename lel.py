@@ -1,4 +1,6 @@
 import sys, pin
+total = 0
+info = file("inscount.out", "w")
 unistd = open("/usr/include/x86_64-linux-gnu/asm/unistd_64.h").read().split("\n")
 syscalls = []
 for line in unistd:
@@ -19,13 +21,13 @@ def debug_entry(ctxt, std):
 pin.AddSyscallEntryFunction(debug_entry)
 pin.AddSyscallExitFunction(trace_syscall_exit)
 
-#TRACE TEST 
 # def trace_syscall_exit(trace_addr):
-# 	# Gets the base of the program trace
-# 	# ctxt = pin.TRACE_BblTail(trace_addr)
-# 	# Gets first basic block in the trace
-# 	# sys.stdout.write("Basic Block @ %x\n" % (ctxt))#pin.bbl_addr(ctxt))
-# 	sys.stdout.write("Basic Block @ %x\n" % pin.TRACE_NumIns(trace_addr))
-# 	return
+# 	global total
+
+# 	x = pin.TRACE_BblHead(trace_addr)
+# 	y = pin.BBL_Address(x)
+# 	instrucs = pin.BBL_NumIns(x)
+# 	total += instrucs
+# 	info.write("Basic Block @ %x SIZE: %x NUM INS= IN BLOCK: %x  TOTAL: %x\n" % (y, pin.BBL_Size(x), instrucs, total ))
 
 # pin.TRACE_AddInstrumentFunction(trace_syscall_exit)

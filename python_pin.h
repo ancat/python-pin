@@ -314,7 +314,12 @@ static PyMethodDef methods[] = {
     {"BBL_HasFallThrough",
         Python_BBL_HasFallThrough,
         METH_VARARGS,
-        "Move all attributes from one BBL to another"
+        "checking if an instruction could have a fall-through path based on the opcode"
+    },
+    {"BBL_Valid",
+     Python_BBL_Valid,
+     METH_VARARGS,
+     "True if bbl is not BBL_INVALID()"
     },
     {NULL, NULL, 0, NULL}
 };
