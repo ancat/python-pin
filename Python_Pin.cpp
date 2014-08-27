@@ -42,6 +42,19 @@ PyObject* Python_TRACE_AddInstrumentFunction(PyObject* self, PyObject* args) {
     return Py_BuildValue("O", Py_True);
 } 
 
+PyObject* Python_INS_AddInstrumentFunction(PyObject* self, PyObject* args) {
+    PyObject* callback;
+    PyObject* v;
+    PyArg_ParseTuple(args, "O|O", &callback, &v);
+
+    if (!PyCallable_Check(callback)) {
+        return Py_BuildValue("O", Py_False);
+    }
+
+    add_hook(&hooks_instruction, callback);
+    return Py_BuildValue("O", Py_True);
+} 
+
 PyObject* Python_IMG_AddInstrumentFunction(PyObject* self, PyObject* args) {
     PyObject* callback;
     PyObject* v;
@@ -159,11 +172,27 @@ int main(int argc, char** argv) {
     if (hooks_trace_instrument) {
         TRACE_AddInstrumentFunction(Trace, 0);
     }
+    if (hooks_instruction) {
+        INS_AddInstrumentFunction(Ins_Hook, 0);
+    }
 
     PIN_StartProgram();
 
     Py_Finalize();
     return 0;
+}
+
+void Ins_Hook(INS ins, VOID *v){
+    PyObject* arguments = PyTuple_New(1);
+    PyTuple_SetItem(arguments, 0, PyInt_FromLong((long int)&ins));
+
+    for (int i=0; hooks_instruction[i]; i++) {
+        if (PyObject_CallObject(hooks_instruction[i], arguments) == NULL) {
+            PyErr_Print();
+            exit(1);
+        }
+    }
+    return;
 }
 
 void Trace(TRACE trace, VOID *v){

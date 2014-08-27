@@ -141,8 +141,11 @@ PyObject* Python_BBL_HasFallThrough(PyObject* self, PyObject* args) {
 /*NEED TO IMPLEMENT INS FIRST */
 PyObject* Python_BBL_InsHead(PyObject* self, PyObject* args) {
     PyObject* trace;
-    PyArg_ParseTuple(args, "O",&trace);
-    return Py_BuildValue("O", Py_True); 
+    PyArg_ParseTuple(args, "O", &trace);
+    INS *need  = (INS*) malloc(sizeof(INS));
+
+    *need = BBL_InsHead(*(BBL*) PyInt_AsLong(trace));
+    return Py_BuildValue("L", need); 
 }
 
 /*NEED TO IMPLEMENT INS FIRST */
