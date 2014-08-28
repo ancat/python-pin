@@ -7,26 +7,36 @@
 PyObject* Python_IMG_Next(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
-    // IMG img_object = *(IMG*)PyInt_AsLong(img);
-    return Py_BuildValue("O", Py_True);
+
+    IMG* img_object = (IMG*) malloc(sizeof(IMG));
+    *img_object = IMG_Next(*(IMG*)PyInt_AsLong(img));
+    return Py_BuildValue("L", img_object);
 }
 
 PyObject* Python_IMG_Prev(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
-    // IMG img_object = *(IMG*)PyInt_AsLong(img);
-    return Py_BuildValue("O", Py_True);
+
+    IMG* img_object = (IMG*) malloc(sizeof(IMG));
+    *img_object = IMG_Prev(*(IMG*)PyInt_AsLong(img));
+    return Py_BuildValue("L", img_object);
 }
 
 PyObject* Python_IMG_Invalid(PyObject* self, PyObject* args) {
-    return Py_BuildValue("O", Py_True);
+    IMG* img_object = (IMG*) malloc(sizeof(IMG));
+    *img_object = IMG_Invalid();
+    return Py_BuildValue("L", img_object);
 }
 
 PyObject* Python_IMG_Valid(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
-    // IMG img_object = *(IMG*)PyInt_AsLong(img);
-    return Py_BuildValue("O", Py_True);
+    IMG img_object = *(IMG*)PyInt_AsLong(img);
+    if (IMG_Valid(img_object)) {
+        return Py_BuildValue("O", Py_True);
+    }
+
+    return Py_BuildValue("O", Py_False);
 }
 
 PyObject* Python_IMG_SecHead(PyObject* self, PyObject* args) {
@@ -53,8 +63,8 @@ PyObject* Python_IMG_RegsymHead(PyObject* self, PyObject* args) {
 PyObject* Python_IMG_Entry(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
-    // IMG img_object = *(IMG*)PyInt_AsLong(img);
-    return Py_BuildValue("O", Py_True);
+    IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("L", IMG_Entry(img_object));
 }
 
 PyObject* Python_IMG_Name(PyObject* self, PyObject* args) {
@@ -74,36 +84,36 @@ PyObject* Python_IMG_Gp(PyObject* self, PyObject* args) {
 PyObject* Python_IMG_LoadOffset(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
-    // IMG img_object = *(IMG*)PyInt_AsLong(img);
-    return Py_BuildValue("O", Py_True);
+    IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("L", IMG_LoadOffset(img_object));
 }
 
 PyObject* Python_IMG_LowAddress(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
-    // IMG img_object = *(IMG*)PyInt_AsLong(img);
-    return Py_BuildValue("O", Py_True);
+    IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("L", IMG_LowAddress(img_object));
 }
 
 PyObject* Python_IMG_HighAddress(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
-    // IMG img_object = *(IMG*)PyInt_AsLong(img);
-    return Py_BuildValue("O", Py_True);
+    IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("L", IMG_HighAddress(img_object));
 }
 
 PyObject* Python_IMG_StartAddress(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
-    // IMG img_object = *(IMG*)PyInt_AsLong(img);
-    return Py_BuildValue("O", Py_True);
+    IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("L", IMG_StartAddress(img_object));
 }
 
 PyObject* Python_IMG_SizeMapped(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
-    // IMG img_object = *(IMG*)PyInt_AsLong(img);
-    return Py_BuildValue("O", Py_True);
+    IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("L", IMG_SizeMapped(img_object));
 }
 
 PyObject* Python_IMG_Type(PyObject* self, PyObject* args) {
@@ -116,8 +126,12 @@ PyObject* Python_IMG_Type(PyObject* self, PyObject* args) {
 PyObject* Python_IMG_IsMainExecutable(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
-    // IMG img_object = *(IMG*)PyInt_AsLong(img);
-    return Py_BuildValue("O", Py_True);
+    IMG img_object = *(IMG*)PyInt_AsLong(img);
+    if (IMG_IsMainExecutable(img_object)) {
+        return Py_BuildValue("O", Py_True);
+    }
+
+    return Py_BuildValue("O", Py_False);
 }
 
 PyObject* Python_IMG_Id(PyObject* self, PyObject* args) {

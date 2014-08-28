@@ -1,0 +1,6 @@
+pin.log
+obj-intel64/
+inscount.out
+*.swp
+*.swo
+*.pyc
