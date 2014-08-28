@@ -9,3 +9,5 @@ def counter(trace_addr):
     instrucs = pin.BBL_NumIns(x)
     total += instrucs
     info.write("Basic Block @ %x SIZE: %x NUM INS= IN BLOCK: %x  TOTAL: %x\n" % (y, pin.BBL_Size(x), instrucs, total ))
+
+pin.TRACE_AddInstrumentFunction(counter)
