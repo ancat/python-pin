@@ -77,8 +77,8 @@ PyObject* Python_IMG_Name(PyObject* self, PyObject* args) {
 PyObject* Python_IMG_Gp(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
-    // IMG img_object = *(IMG*)PyInt_AsLong(img);
-    return Py_BuildValue("O", Py_True);
+    IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("L", IMG_Gp(img_object));
 }
 
 PyObject* Python_IMG_LoadOffset(PyObject* self, PyObject* args) {
@@ -119,8 +119,8 @@ PyObject* Python_IMG_SizeMapped(PyObject* self, PyObject* args) {
 PyObject* Python_IMG_Type(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
-    // IMG img_object = *(IMG*)PyInt_AsLong(img);
-    return Py_BuildValue("O", Py_True);
+    IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("L", IMG_Type(img_object));
 }
 
 PyObject* Python_IMG_IsMainExecutable(PyObject* self, PyObject* args) {
@@ -137,32 +137,39 @@ PyObject* Python_IMG_IsMainExecutable(PyObject* self, PyObject* args) {
 PyObject* Python_IMG_Id(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
-    // IMG img_object = *(IMG*)PyInt_AsLong(img);
-    return Py_BuildValue("O", Py_True);
+    IMG img_object = *(IMG*)PyInt_AsLong(img);
+    return Py_BuildValue("L", IMG_Id(img_object));
 }
 
 PyObject* Python_IMG_FindImgById(PyObject* self, PyObject* args) {
     PyObject* id;
     PyArg_ParseTuple(args, "O", &id);
-    return Py_BuildValue("O", Py_True);
+    IMG* img = (IMG*) malloc(sizeof(IMG));
+    *img = IMG_FindImgById((UINT32) PyInt_AsLong(id));
+    return Py_BuildValue("L", img);
 }
 
 PyObject* Python_IMG_FindByAddress(PyObject* self, PyObject* args) {
     PyObject* address;
     PyArg_ParseTuple(args, "O", &address);
-    return Py_BuildValue("O", Py_True);
+    IMG* img = (IMG*) malloc(sizeof(IMG));
+    *img = IMG_FindByAddress((ADDRINT) PyInt_AsLong(address));
+    return Py_BuildValue("L", img);
 }
 
 PyObject* Python_IMG_Open(PyObject* self, PyObject* args) {
     PyObject* filename;
     PyArg_ParseTuple(args, "O", &filename);
-    return Py_BuildValue("O", Py_True);
+    IMG* img = (IMG*) malloc(sizeof(IMG));
+    *img = IMG_Open(PyString_AsString(filename));
+    return Py_BuildValue("L", img);
 }
 
 PyObject* Python_IMG_Close(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
-    // IMG img_object = *(IMG*)PyInt_AsLong(img);
+    IMG img_object = *(IMG*)PyInt_AsLong(img);
+    IMG_Close(img_object);
     return Py_BuildValue("O", Py_True);
 }
 

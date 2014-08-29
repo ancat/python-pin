@@ -138,6 +138,10 @@ int main(int argc, char** argv) {
 
     PyModule_AddIntConstant(pin_module, "IPOINT_BEFORE", IPOINT_BEFORE);
     PyModule_AddIntConstant(pin_module, "IPOINT_AFTER", IPOINT_AFTER);
+    PyModule_AddIntConstant(pin_module, "IMG_TYPE_STATIC", IMG_TYPE_STATIC);
+    PyModule_AddIntConstant(pin_module, "IMG_TYPE_SHARED", IMG_TYPE_SHARED);
+    PyModule_AddIntConstant(pin_module, "IMG_TYPE_SHAREDLIB", IMG_TYPE_SHAREDLIB);
+    PyModule_AddIntConstant(pin_module, "IMG_TYPE_RELOCATABLE", IMG_TYPE_RELOCATABLE);
 
     const char* filename = KnobPythonModule.Value().c_str();
     FILE* tool = fopen(filename, "r");
