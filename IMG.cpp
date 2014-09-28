@@ -1,3 +1,8 @@
+/*
+    Only Python_IMG_RegsymHead left
+    Need SYM first.
+*/
+
 #include </usr/include/python2.7/Python.h>
 #include "pin.H"
 #include <strings.h>
@@ -42,15 +47,19 @@ PyObject* Python_IMG_Valid(PyObject* self, PyObject* args) {
 PyObject* Python_IMG_SecHead(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
-    // IMG img_object = *(IMG*)PyInt_AsLong(img);
-    return Py_BuildValue("O", Py_True);
+    IMG img_object = *(IMG*)PyInt_AsLong(img);
+    SEC* sec = (SEC*) malloc(sizeof(SEC));
+    *sec = IMG_SecHead(img_object);
+    return Py_BuildValue("L", sec);
 }
 
 PyObject* Python_IMG_SecTail(PyObject* self, PyObject* args) {
     PyObject* img;
     PyArg_ParseTuple(args, "O", &img);
-    // IMG img_object = *(IMG*)PyInt_AsLong(img);
-    return Py_BuildValue("O", Py_True);
+    IMG img_object = *(IMG*)PyInt_AsLong(img);
+    SEC* sec = (SEC*) malloc(sizeof(SEC));
+    *sec = IMG_SecTail(img_object);
+    return Py_BuildValue("L", sec);
 }
 
 PyObject* Python_IMG_RegsymHead(PyObject* self, PyObject* args) {
@@ -174,10 +183,14 @@ PyObject* Python_IMG_Close(PyObject* self, PyObject* args) {
 }
 
 PyObject* Python_APP_ImgHead(PyObject* self, PyObject* args) {
-    return Py_BuildValue("O", Py_True);
+    IMG* img = (IMG*) malloc(sizeof(IMG));
+    *img = APP_ImgHead();
+    return Py_BuildValue("L", img);
 }
 
 PyObject* Python_APP_ImgTail(PyObject* self, PyObject* args) {
-    return Py_BuildValue("O", Py_True);
+    IMG* img = (IMG*) malloc(sizeof(IMG));
+    *img = APP_ImgTail();
+    return Py_BuildValue("L", img);
 }
 
