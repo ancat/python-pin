@@ -25,39 +25,55 @@ PyObject* Python_RTN_Address(PyObject* self, PyObject* args) {
 
 /*AUTO GENERATED SKELETONS*/
 PyObject* Python_RTN_Valid(PyObject* self, PyObject* args) {
-    	PyObject* trace;
-    	PyArg_ParseTuple(args, "L",&trace);
-    	return Py_BuildValue("L", RTN_Valid(*(RTN*)trace));
+    PyObject* trace;
+    PyArg_ParseTuple(args, "L",&trace);
+    if (RTN_Valid(*(RTN*)trace)) {
+        return Py_BuildValue("O", Py_True);
+    } else {
+        return Py_BuildValue("O", Py_False);
+    }
 }
 PyObject* Python_RTN_Id(PyObject* self, PyObject* args) {
-    	PyObject* trace;
-    	PyArg_ParseTuple(args, "L",&trace);
-    	return Py_BuildValue("L", RTN_Id(*(RTN*)trace));
+    PyObject* trace;
+    PyArg_ParseTuple(args, "L",&trace);
+    return Py_BuildValue("L", RTN_Id(*(RTN*)trace));
 }
 PyObject* Python_RTN_Range(PyObject* self, PyObject* args) {
-    	PyObject* trace;
-    	PyArg_ParseTuple(args, "L",&trace);
-    	return Py_BuildValue("L", RTN_Range(*(RTN*)trace));
+    PyObject* trace;
+    PyArg_ParseTuple(args, "L",&trace);
+    return Py_BuildValue("L", RTN_Range(*(RTN*)trace));
 }
 PyObject* Python_RTN_Size(PyObject* self, PyObject* args) {
-    	PyObject* trace;
-    	PyArg_ParseTuple(args, "L",&trace);
-    	return Py_BuildValue("L", RTN_Size(*(RTN*)trace));
+    PyObject* trace;
+    PyArg_ParseTuple(args, "L",&trace);
+    return Py_BuildValue("L", RTN_Size(*(RTN*)trace));
 }
 PyObject* Python_RTN_IsDynamic(PyObject* self, PyObject* args) {
-    	PyObject* trace;
-    	PyArg_ParseTuple(args, "L",&trace);
-    	return Py_BuildValue("L", RTN_IsDynamic(*(RTN*)trace));
+    PyObject* trace;
+    PyArg_ParseTuple(args, "L",&trace);
+    if (RTN_IsDynamic(*(RTN*)trace)) {
+        return Py_BuildValue("O", Py_True);
+    } else {
+        return Py_BuildValue("O", Py_False);
+    }
 }
 PyObject* Python_RTN_IsSafeForProbedInsertion(PyObject* self, PyObject* args) {
-    	PyObject* trace;
-    	PyArg_ParseTuple(args, "L",&trace);
-    	return Py_BuildValue("L", RTN_IsSafeForProbedInsertion(*(RTN*)trace));
+    PyObject* trace;
+    PyArg_ParseTuple(args, "L",&trace);
+    if (RTN_IsSafeForProbedInsertion(*(RTN*)trace)) {
+        return Py_BuildValue("O", Py_True);
+    } else {
+        return Py_BuildValue("O", Py_False);
+    }
 }
 PyObject* Python_RTN_IsSafeForProbedReplacement(PyObject* self, PyObject* args) {
-    	PyObject* trace;
-    	PyArg_ParseTuple(args, "L",&trace);
-    	return Py_BuildValue("L", RTN_IsSafeForProbedReplacement(*(RTN*)trace));
+    PyObject* trace;
+    PyArg_ParseTuple(args, "L",&trace);
+    if (RTN_IsSafeForProbedReplacement(*(RTN*)trace)) {
+        return Py_BuildValue("O", Py_True);
+    } else {
+        return Py_BuildValue("O", Py_False);
+    }
 }
 
 PyObject* Python_RTN_FindNameByAddress(PyObject* self, PyObject* args) {
@@ -80,7 +96,6 @@ PyObject* Python_RTN_Close(PyObject* self, PyObject* args) {
     return Py_BuildValue("O", Py_True);
 }
 
-
 /*NEED TO IMPLEMENT INS FIRST */
 PyObject* Python_RTN_InsHead(PyObject* self, PyObject* args) {
     PyObject* trace;
@@ -100,7 +115,7 @@ PyObject* Python_RTN_InsTail(PyObject* self, PyObject* args) {
     return Py_BuildValue("L", need); 
 }
 PyObject* Python_RTN_NumIns(PyObject* self, PyObject* args) {
-    	PyObject* trace;
-    	PyArg_ParseTuple(args, "L",&trace);
-    	return Py_BuildValue("L", RTN_NumIns(*(RTN*)trace));
+    PyObject* trace;
+    PyArg_ParseTuple(args, "L",&trace);
+    return Py_BuildValue("L", RTN_NumIns(*(RTN*)trace));
 }
