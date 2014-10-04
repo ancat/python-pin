@@ -35,6 +35,7 @@ PyObject* Python_IMG_StartAddress(PyObject* self, PyObject* args);
 PyObject* Python_IMG_SizeMapped(PyObject* self, PyObject* args);
 PyObject* Python_IMG_Type(PyObject* self, PyObject* args);
 PyObject* Python_IMG_IsMainExecutable(PyObject* self, PyObject* args);
+PyObject* Python_IMG_IsStaticExecutable(PyObject* self, PyObject* args);
 PyObject* Python_IMG_Id(PyObject* self, PyObject* args);
 PyObject* Python_IMG_FindImgById(PyObject* self, PyObject* args);
 PyObject* Python_IMG_FindByAddress(PyObject* self, PyObject* args);

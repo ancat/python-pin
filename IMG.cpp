@@ -1,6 +1,12 @@
 /*
     Only Python_IMG_RegsymHead left
     Need SYM first.
+
+    New in 2.14 (not implemented yet):
+        LEVEL_PINCLIENT::IMG_NumRegions (IMG img)
+        LEVEL_PINCLIENT::IMG_RegionHighAddress (IMG img, UINT32 n)
+        LEVEL_PINCLIENT::IMG_RegionLowAddress (IMG img, UINT32 n)
+
 */
 
 #include </usr/include/python2.7/Python.h>
@@ -137,6 +143,17 @@ PyObject* Python_IMG_IsMainExecutable(PyObject* self, PyObject* args) {
     PyArg_ParseTuple(args, "O", &img);
     IMG img_object = *(IMG*)PyInt_AsLong(img);
     if (IMG_IsMainExecutable(img_object)) {
+        return Py_BuildValue("O", Py_True);
+    }
+
+    return Py_BuildValue("O", Py_False);
+}
+
+PyObject* Python_IMG_IsStaticExecutable(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyArg_ParseTuple(args, "O", &img);
+    IMG img_object = *(IMG*)PyInt_AsLong(img);
+    if (IMG_IsStaticExecutable(img_object)) {
         return Py_BuildValue("O", Py_True);
     }
 
