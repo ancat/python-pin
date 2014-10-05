@@ -278,6 +278,7 @@ PyObject* Python_INS_IsIndirectBranchOrCall(PyObject* self, PyObject* args) {
     }
 }
 
+/* FIXME */
 PyObject* Python_INS_RegR(PyObject* self, PyObject* args) {
     PyObject* ins, *uint_;
     PyArg_ParseTuple(args, "L|L", &ins, &uint_);
@@ -308,7 +309,7 @@ PyObject* Python_INS_MaxNumWRegs(PyObject* self, PyObject* args) {
     PyArg_ParseTuple(args, "L", &ins);
     return Py_BuildValue("L", INS_MaxNumWRegs(*(INS*) ins));
 }
-/*end bulk*/
+/*end bulk/FIXME*/
 
 /* NEED REG CLASS */
 PyObject* Python_INS_RegRContain(PyObject* self, PyObject* args) {
