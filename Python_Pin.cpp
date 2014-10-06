@@ -122,6 +122,7 @@ PyObject* Python_PIN_AddSyscallEntryFunction(PyObject* self, PyObject* args) {
 
 KNOB<string> KnobPythonModule(KNOB_MODE_WRITEONCE, "pintool", "m", "", "the python pintool to import");
 int main(int argc, char** argv) {
+    PIN_InitSymbols();
     Py_Initialize();
     PyRun_SimpleString("import sys; sys.path.append('.')\n");
     if (PIN_Init(argc, argv)) {
