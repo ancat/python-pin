@@ -1,121 +1,235 @@
 #include </usr/include/python2.7/Python.h>
 #include "pin.H"
+#include "RTN.h"
 
 PyObject* Python_RTN_InsertCall(PyObject* self, PyObject* args) {
-    /*PyObject* rtn;
-    PyObject* callback;
-    PyObject* action;
-    PyObject* num_arguments;*/
+    return Py_BuildValue("O", Py_False);
+}
 
-    return Py_BuildValue("O", Py_True);
+PyObject* Python_RTN_FindByName(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyObject* name;
+    PyArg_ParseTuple(args, "L|s", &img, &name);
+    IMG img_object = *(IMG*) img;
+    char* name_object = (char*) name;
+    RTN* rtn_return = (RTN*) malloc(sizeof(RTN));
+    *rtn_return = RTN_FindByName(img_object, name_object);
+    return Py_BuildValue("L", rtn_return);
+}
+
+PyObject* Python_RTN_Next(PyObject* self, PyObject* args) {
+    PyObject* x;
+    PyArg_ParseTuple(args, "L", &x);
+    RTN x_object = *(RTN*) x;
+    RTN* rtn_return = (RTN*) malloc(sizeof(RTN));
+    *rtn_return = RTN_Next(x_object);
+    return Py_BuildValue("L", rtn_return);
+}
+
+PyObject* Python_RTN_Prev(PyObject* self, PyObject* args) {
+    PyObject* x;
+    PyArg_ParseTuple(args, "L", &x);
+    RTN x_object = *(RTN*) x;
+    RTN* rtn_return = (RTN*) malloc(sizeof(RTN));
+    *rtn_return = RTN_Prev(x_object);
+    return Py_BuildValue("L", rtn_return);
+}
+
+PyObject* Python_RTN_Invalid(PyObject* self, PyObject* args) {
+
+    RTN* rtn_return = (RTN*) malloc(sizeof(RTN));
+    *rtn_return = RTN_Invalid();
+    return Py_BuildValue("L", rtn_return);
+}
+
+PyObject* Python_RTN_Valid(PyObject* self, PyObject* args) {
+    PyObject* x;
+    PyArg_ParseTuple(args, "L", &x);
+    RTN x_object = *(RTN*) x;
+    if (RTN_Valid(x_object)) {
+        return Py_BuildValue("O", Py_True);
+    } else {
+        return Py_BuildValue("O", Py_False);
+    }
 }
 
 PyObject* Python_RTN_Name(PyObject* self, PyObject* args) {
-    PyObject* ins;
-    PyArg_ParseTuple(args, "L", &ins);
-    return Py_BuildValue("s", RTN_Name(*(RTN*) ins).c_str());
+    PyObject* x;
+    PyArg_ParseTuple(args, "L", &x);
+    RTN x_object = *(RTN*) x;
+    return Py_BuildValue("s", RTN_Name(x_object).c_str());
 }
 
-/* VERIFIED */
-PyObject* Python_RTN_Address(PyObject* self, PyObject* args) {
-    PyObject* trace;
-    PyArg_ParseTuple(args, "L",&trace);
-    return Py_BuildValue("L", RTN_Address(*(RTN*)trace));
+PyObject* Python_RTN_Sym(PyObject* self, PyObject* args) {
+    PyObject* x;
+    PyArg_ParseTuple(args, "L", &x);
+    RTN x_object = *(RTN*) x;
+    SYM* sym_return = (SYM*) malloc(sizeof(SYM));
+    *sym_return = RTN_Sym(x_object);
+    return Py_BuildValue("L", sym_return);
 }
 
-/*AUTO GENERATED SKELETONS*/
-PyObject* Python_RTN_Valid(PyObject* self, PyObject* args) {
-    PyObject* trace;
-    PyArg_ParseTuple(args, "L",&trace);
-    if (RTN_Valid(*(RTN*)trace)) {
-        return Py_BuildValue("O", Py_True);
-    } else {
-        return Py_BuildValue("O", Py_False);
-    }
-}
 PyObject* Python_RTN_Id(PyObject* self, PyObject* args) {
-    PyObject* trace;
-    PyArg_ParseTuple(args, "L",&trace);
-    return Py_BuildValue("L", RTN_Id(*(RTN*)trace));
+    PyObject* x;
+    PyArg_ParseTuple(args, "L", &x);
+    RTN x_object = *(RTN*) x;
+    return Py_BuildValue("L", RTN_Id(x_object));
 }
+
 PyObject* Python_RTN_Range(PyObject* self, PyObject* args) {
-    PyObject* trace;
-    PyArg_ParseTuple(args, "L",&trace);
-    return Py_BuildValue("L", RTN_Range(*(RTN*)trace));
+    PyObject* rtn;
+    PyArg_ParseTuple(args, "L", &rtn);
+    RTN rtn_object = *(RTN*) rtn;
+    return Py_BuildValue("L", RTN_Range(rtn_object));
 }
+
 PyObject* Python_RTN_Size(PyObject* self, PyObject* args) {
-    PyObject* trace;
-    PyArg_ParseTuple(args, "L",&trace);
-    return Py_BuildValue("L", RTN_Size(*(RTN*)trace));
-}
-PyObject* Python_RTN_IsDynamic(PyObject* self, PyObject* args) {
-    PyObject* trace;
-    PyArg_ParseTuple(args, "L",&trace);
-    if (RTN_IsDynamic(*(RTN*)trace)) {
-        return Py_BuildValue("O", Py_True);
-    } else {
-        return Py_BuildValue("O", Py_False);
-    }
-}
-PyObject* Python_RTN_IsSafeForProbedInsertion(PyObject* self, PyObject* args) {
-    PyObject* trace;
-    PyArg_ParseTuple(args, "L",&trace);
-    if (RTN_IsSafeForProbedInsertion(*(RTN*)trace)) {
-        return Py_BuildValue("O", Py_True);
-    } else {
-        return Py_BuildValue("O", Py_False);
-    }
-}
-PyObject* Python_RTN_IsSafeForProbedReplacement(PyObject* self, PyObject* args) {
-    PyObject* trace;
-    PyArg_ParseTuple(args, "L",&trace);
-    if (RTN_IsSafeForProbedReplacement(*(RTN*)trace)) {
-        return Py_BuildValue("O", Py_True);
-    } else {
-        return Py_BuildValue("O", Py_False);
-    }
+    PyObject* rtn;
+    PyArg_ParseTuple(args, "L", &rtn);
+    RTN rtn_object = *(RTN*) rtn;
+    return Py_BuildValue("L", RTN_Size(rtn_object));
 }
 
 PyObject* Python_RTN_FindNameByAddress(PyObject* self, PyObject* args) {
-    PyObject* addr;
-    PyArg_ParseTuple(args, "L", &addr);
-    return Py_BuildValue("s", RTN_FindNameByAddress(*(ADDRINT*) addr).c_str());
+    PyObject* address;
+    PyArg_ParseTuple(args, "L", &address);
+    ADDRINT address_object = *(ADDRINT*) address;
+    return Py_BuildValue("s", RTN_FindNameByAddress(address_object).c_str());
+}
+
+PyObject* Python_RTN_FindByAddress(PyObject* self, PyObject* args) {
+    PyObject* address;
+    PyArg_ParseTuple(args, "L", &address);
+    ADDRINT address_object = *(ADDRINT*) address;
+    RTN* rtn_return = (RTN*) malloc(sizeof(RTN));
+    *rtn_return = RTN_FindByAddress(address_object);
+    return Py_BuildValue("L", rtn_return);
 }
 
 PyObject* Python_RTN_Open(PyObject* self, PyObject* args) {
-    PyObject* addr;
-    PyArg_ParseTuple(args, "L", &addr);
-    RTN_Open(*(RTN*) addr);
+    PyObject* rtn;
+    PyArg_ParseTuple(args, "L", &rtn);
+    RTN rtn_object = *(RTN*) rtn;
+    RTN_Open(rtn_object);
     return Py_BuildValue("O", Py_True);
 }
 
 PyObject* Python_RTN_Close(PyObject* self, PyObject* args) {
-    PyObject* addr;
-    PyArg_ParseTuple(args, "L", &addr);
-    RTN_Close(*(RTN*) addr);
+    PyObject* rtn;
+    PyArg_ParseTuple(args, "L", &rtn);
+    RTN rtn_object = *(RTN*) rtn;
+    RTN_Close(rtn_object);
     return Py_BuildValue("O", Py_True);
 }
 
-/*NEED TO IMPLEMENT INS FIRST */
 PyObject* Python_RTN_InsHead(PyObject* self, PyObject* args) {
-    PyObject* trace;
-    PyArg_ParseTuple(args, "O", &trace);
-    INS *need  = (INS*) malloc(sizeof(INS));
+    PyObject* rtn;
+    PyArg_ParseTuple(args, "L", &rtn);
+    RTN rtn_object = *(RTN*) rtn;
+    INS* ins_return = (INS*) malloc(sizeof(INS));
+    *ins_return = RTN_InsHead(rtn_object);
+    return Py_BuildValue("L", ins_return);
+}
 
-    *need = RTN_InsHead(*(RTN*) PyInt_AsLong(trace));
-    return Py_BuildValue("L", need); 
+PyObject* Python_RTN_InsHeadOnly(PyObject* self, PyObject* args) {
+    PyObject* rtn;
+    PyArg_ParseTuple(args, "L", &rtn);
+    RTN rtn_object = *(RTN*) rtn;
+    INS* ins_return = (INS*) malloc(sizeof(INS));
+    *ins_return = RTN_InsHeadOnly(rtn_object);
+    return Py_BuildValue("L", ins_return);
 }
 
 PyObject* Python_RTN_InsTail(PyObject* self, PyObject* args) {
-    PyObject* trace;
-    PyArg_ParseTuple(args, "O", &trace);
-    INS *need  = (INS*) malloc(sizeof(INS));
+    PyObject* rtn;
+    PyArg_ParseTuple(args, "L", &rtn);
+    RTN rtn_object = *(RTN*) rtn;
+    INS* ins_return = (INS*) malloc(sizeof(INS));
+    *ins_return = RTN_InsTail(rtn_object);
+    return Py_BuildValue("L", ins_return);
+}
 
-    *need = RTN_InsTail(*(RTN*) PyInt_AsLong(trace));
-    return Py_BuildValue("L", need); 
-}
 PyObject* Python_RTN_NumIns(PyObject* self, PyObject* args) {
-    PyObject* trace;
-    PyArg_ParseTuple(args, "L",&trace);
-    return Py_BuildValue("L", RTN_NumIns(*(RTN*)trace));
+    PyObject* rtn;
+    PyArg_ParseTuple(args, "L", &rtn);
+    RTN rtn_object = *(RTN*) rtn;
+    return Py_BuildValue("L", RTN_NumIns(rtn_object));
 }
+
+PyObject* Python_RTN_Address(PyObject* self, PyObject* args) {
+    PyObject* rtn;
+    PyArg_ParseTuple(args, "L", &rtn);
+    RTN rtn_object = *(RTN*) rtn;
+    return Py_BuildValue("L", RTN_Address(rtn_object));
+}
+
+PyObject* Python_RTN_CreateAt(PyObject* self, PyObject* args) {
+    PyObject* address;
+    PyObject* name;
+    PyArg_ParseTuple(args, "L|s", &address, &name);
+    ADDRINT address_object = *(ADDRINT*) address;
+    char* name_object = PyString_AsString(name);
+    RTN* rtn_return = (RTN*) malloc(sizeof(RTN));
+    *rtn_return = RTN_CreateAt(address_object, name_object);
+    return Py_BuildValue("L", rtn_return);
+}
+
+PyObject* Python_RTN_IsDynamic(PyObject* self, PyObject* args) {
+    PyObject* rtn;
+    PyArg_ParseTuple(args, "L", &rtn);
+    RTN rtn_object = *(RTN*) rtn;
+    if (RTN_IsDynamic(rtn_object)) {
+        return Py_BuildValue("O", Py_True);
+    } else {
+        return Py_BuildValue("O", Py_False);
+    }
+}
+
+PyObject* Python_RTN_IsSafeForProbedInsertion(PyObject* self, PyObject* args) {
+    PyObject* rtn;
+    PyArg_ParseTuple(args, "L", &rtn);
+    RTN rtn_object = *(RTN*) rtn;
+    if (RTN_IsSafeForProbedInsertion(rtn_object)) {
+        return Py_BuildValue("O", Py_True);
+    } else {
+        return Py_BuildValue("O", Py_False);
+    }
+}
+
+PyObject* Python_RTN_IsSafeForProbedInsertionEx(PyObject* self, PyObject* args) {
+    PyObject* rtn;
+    PyObject* mode;
+    PyArg_ParseTuple(args, "L|L", &rtn, &mode);
+    RTN rtn_object = *(RTN*) rtn;
+    PROBE_MODE mode_object = *(PROBE_MODE*) mode;
+    if (RTN_IsSafeForProbedInsertionEx(rtn_object, mode_object)) {
+        return Py_BuildValue("O", Py_True);
+    } else {
+        return Py_BuildValue("O", Py_False);
+    }
+}
+
+PyObject* Python_RTN_IsSafeForProbedReplacement(PyObject* self, PyObject* args) {
+    PyObject* rtn;
+    PyArg_ParseTuple(args, "L", &rtn);
+    RTN rtn_object = *(RTN*) rtn;
+    if (RTN_IsSafeForProbedReplacement(rtn_object)) {
+        return Py_BuildValue("O", Py_True);
+    } else {
+        return Py_BuildValue("O", Py_False);
+    }
+}
+
+PyObject* Python_RTN_IsSafeForProbedReplacementEx(PyObject* self, PyObject* args) {
+    PyObject* rtn;
+    PyObject* mode;
+    PyArg_ParseTuple(args, "L|L", &rtn, &mode);
+    RTN rtn_object = *(RTN*) rtn;
+    PROBE_MODE mode_object = *(PROBE_MODE*) mode;
+    if (RTN_IsSafeForProbedReplacementEx(rtn_object, mode_object)) {
+        return Py_BuildValue("O", Py_True);
+    } else {
+        return Py_BuildValue("O", Py_False);
+    }
+}
+
