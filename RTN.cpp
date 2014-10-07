@@ -6,17 +6,6 @@ PyObject* Python_RTN_InsertCall(PyObject* self, PyObject* args) {
     return Py_BuildValue("O", Py_False);
 }
 
-PyObject* Python_RTN_FindByName(PyObject* self, PyObject* args) {
-    PyObject* img;
-    PyObject* name;
-    PyArg_ParseTuple(args, "L|s", &img, &name);
-    IMG img_object = *(IMG*) img;
-    char* name_object = (char*) name;
-    RTN* rtn_return = (RTN*) malloc(sizeof(RTN));
-    *rtn_return = RTN_FindByName(img_object, name_object);
-    return Py_BuildValue("L", rtn_return);
-}
-
 PyObject* Python_RTN_Next(PyObject* self, PyObject* args) {
     PyObject* x;
     PyArg_ParseTuple(args, "L", &x);
@@ -93,16 +82,27 @@ PyObject* Python_RTN_Size(PyObject* self, PyObject* args) {
 PyObject* Python_RTN_FindNameByAddress(PyObject* self, PyObject* args) {
     PyObject* address;
     PyArg_ParseTuple(args, "L", &address);
-    ADDRINT address_object = *(ADDRINT*) address;
+    ADDRINT address_object = (ADDRINT) address;
     return Py_BuildValue("s", RTN_FindNameByAddress(address_object).c_str());
 }
 
 PyObject* Python_RTN_FindByAddress(PyObject* self, PyObject* args) {
     PyObject* address;
     PyArg_ParseTuple(args, "L", &address);
-    ADDRINT address_object = *(ADDRINT*) address;
+    ADDRINT address_object = (ADDRINT) address;
     RTN* rtn_return = (RTN*) malloc(sizeof(RTN));
     *rtn_return = RTN_FindByAddress(address_object);
+    return Py_BuildValue("L", rtn_return);
+}
+
+PyObject* Python_RTN_FindByName(PyObject* self, PyObject* args) {
+    PyObject* img;
+    PyObject* name;
+    PyArg_ParseTuple(args, "L|s", &img, &name);
+    IMG img_object = *(IMG*) img;
+    char* name_object = PyString_AsString(name);
+    RTN* rtn_return = (RTN*) malloc(sizeof(RTN));
+    *rtn_return = RTN_FindByName(img_object, name_object);
     return Py_BuildValue("L", rtn_return);
 }
 
@@ -167,7 +167,7 @@ PyObject* Python_RTN_CreateAt(PyObject* self, PyObject* args) {
     PyObject* address;
     PyObject* name;
     PyArg_ParseTuple(args, "L|s", &address, &name);
-    ADDRINT address_object = *(ADDRINT*) address;
+    ADDRINT address_object = (ADDRINT) address;
     char* name_object = PyString_AsString(name);
     RTN* rtn_return = (RTN*) malloc(sizeof(RTN));
     *rtn_return = RTN_CreateAt(address_object, name_object);
