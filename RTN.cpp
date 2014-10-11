@@ -98,7 +98,7 @@ PyObject* Python_RTN_FindByAddress(PyObject* self, PyObject* args) {
 PyObject* Python_RTN_FindByName(PyObject* self, PyObject* args) {
     PyObject* img;
     PyObject* name;
-    PyArg_ParseTuple(args, "L|s", &img, &name);
+    PyArg_ParseTuple(args, "L|O", &img, &name);
     IMG img_object = *(IMG*) img;
     char* name_object = PyString_AsString(name);
     RTN* rtn_return = (RTN*) malloc(sizeof(RTN));
