@@ -1,7 +1,7 @@
 import pin, sys
 
 def image_load(image):
-    rtn = RTN_FindByName('printf')
+    rtn = pin.RTN_FindByName('printf')
     if pin.RTN_Valid(rtn):
         print "Found %s in %s" % (routine, pin.IMG_Name(img))
         pin.RTN_Open(rtn)

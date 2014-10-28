@@ -1,7 +1,7 @@
 import sys, pin
 total = 0
 info = file("inscount.out", "w")
-unistd = open("/usr/include/x86_64-linux-gnu/asm/unistd_64.h").read().split("\n")
+unistd = open("/usr/include/i386-linux-gnu/asm/unistd_32.h").read().split("\n")
 syscalls = []
 for line in unistd:
     if "define __NR" in line:
@@ -14,9 +14,9 @@ def trace_syscall_exit(ctxt, std):
 
 def debug_entry(ctxt, std):
     global syscalls
-    syscall_function = syscalls[pin.GetSyscallNumber(ctxt, std)]
-    syscall_args = [hex(pin.GetSyscallArgument(ctxt, std, x)) for x in range(4)]
-    sys.stdout.write("%s(%s)" % (syscall_function, ', '.join(syscall_args)))
+    k = pin.GetSyscallNumber(ctxt, std)
+    print k
+    #sys.stdout.write("%s(%s)" % (syscall_function, ', '.join(syscall_args)))
 
 pin.AddSyscallEntryFunction(debug_entry)
 pin.AddSyscallExitFunction(trace_syscall_exit)
