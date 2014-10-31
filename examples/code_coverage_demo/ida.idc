@@ -3,7 +3,6 @@
 static main(void) {
   auto x = fopen("instruc", "r");
   auto y = readstr(x);
-  auto count = 50;
   auto b = atol(y);
   while(b){
 	  print(b);
