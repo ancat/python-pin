@@ -16,6 +16,7 @@ PyObject* Python_INS_IsLea(PyObject* self, PyObject* args);
 PyObject* Python_INS_IsNop(PyObject* self, PyObject* args);
 PyObject* Python_OPCODE_StringShort(PyObject* self, PyObject* args);
 PyObject* Python_INS_Mnemonic(PyObject* self, PyObject* args);
+PyObject* Python_INS_InsertCall(PyObject* self, PyObject* args);
 PyObject* Python_INS_IsBranch(PyObject* self, PyObject* args);
 PyObject* Python_INS_IsDirectBranch(PyObject* self, PyObject* args);
 PyObject* Python_INS_IsDirectCall(PyObject* self, PyObject* args);

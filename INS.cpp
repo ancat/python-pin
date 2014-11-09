@@ -2,6 +2,10 @@
 #include "pin.H"
 #include "INS.h"
 
+PyObject* Python_INS_InsertCall(PyObject* self, PyObject* args) {
+    return NULL;
+}
+
 PyObject* Python_INS_Category(PyObject* self, PyObject* args) {
     PyObject* ins;
     PyArg_ParseTuple(args, "L", &ins);
