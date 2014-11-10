@@ -10,7 +10,6 @@
 #include <strings.h>
 #include <stdlib.h>
 
-
 void add_hook(PyObject*** hooks, PyObject* new_hook) {
     PyObject** hooks_list = *hooks;
     if (hooks_list == NULL) {
@@ -28,6 +27,28 @@ void add_hook(PyObject*** hooks, PyObject* new_hook) {
     *hooks = hooks_list;
 }
 
+void Fini(INT32, VOID*) {
+    for (int i=0; fini_functions[i]; i++) {
+        if (PyObject_CallObject(fini_functions[i], NULL) == NULL) {
+            PyErr_Print();
+            exit(1);
+        }
+    }
+    return;
+}
+
+PyObject* Python_AddFiniFunction(PyObject* self, PyObject* args) {
+    PyObject* callback;
+    PyObject* v;
+    PyArg_ParseTuple(args, "O|O", &callback, &v);
+
+    if (!PyCallable_Check(callback)) {
+        return Py_BuildValue("O", Py_False);
+    }
+
+    add_hook(&fini_functions, callback);
+    return Py_BuildValue("O", Py_True);
+} 
 
 PyObject* Python_TRACE_AddInstrumentFunction(PyObject* self, PyObject* args) {
     PyObject* callback;
@@ -118,7 +139,6 @@ PyObject* Python_PIN_AddSyscallEntryFunction(PyObject* self, PyObject* args) {
     add_hook(&hooks_syscall_entry, callback);
     return Py_BuildValue("O", Py_True);
 }
-
 
 KNOB<string> KnobPythonModule(KNOB_MODE_WRITEONCE, "pintool", "m", "", "the python pintool to import");
 int main(int argc, char** argv) {
@@ -240,6 +260,10 @@ int main(int argc, char** argv) {
 
     PyRun_SimpleFile(tool, filename);
     fclose(tool);
+
+    if (fini_functions) {
+        PIN_AddFiniFunction(Fini, 0);
+    }
 
     if (hooks_syscall_entry) {
         PIN_AddSyscallEntryFunction(SyscallEntry, 0);

@@ -2,8 +2,118 @@
 #include "pin.H"
 #include "INS.h"
 
+void INS_IPOINT_BEFORE(PyObject* callback, INS ins_object, UINT32 num_operands, unsigned int rax, unsigned int rbx, unsigned int rcx, unsigned int rdx, unsigned int rdi, unsigned int rsi, unsigned int rbp, unsigned int rsp, unsigned int memop0, unsigned int memop1, unsigned int memop2) {
+    PyObject* dict = PyDict_New();
+    PyObject* arguments = PyTuple_New(1);
+
+    #ifdef __i386__
+    PyDict_SetItemString(dict, "REG_EAX", PyInt_FromLong(rax));
+    PyDict_SetItemString(dict, "REG_EBX", PyInt_FromLong(rbx));
+    PyDict_SetItemString(dict, "REG_ECX", PyInt_FromLong(rcx));
+    PyDict_SetItemString(dict, "REG_EDX", PyInt_FromLong(rdx));
+    PyDict_SetItemString(dict, "REG_EDI", PyInt_FromLong(rdi));
+    PyDict_SetItemString(dict, "REG_ESI", PyInt_FromLong(rsi));
+    PyDict_SetItemString(dict, "REG_EBP", PyInt_FromLong(rbp));
+    PyDict_SetItemString(dict, "REG_ESP", PyInt_FromLong(rsp));
+    switch (num_operands) {
+        case 0:
+        break;
+        case 1:
+        PyDict_SetItemString(dict, "MEM_OP0", PyInt_FromLong(memop0));
+        case 2:
+        PyDict_SetItemString(dict, "MEM_OP1", PyInt_FromLong(memop1));
+        case 3:
+        PyDict_SetItemString(dict, "MEM_OP2", PyInt_FromLong(memop2));
+        break;
+    }
+
+    #endif
+    #ifdef __x86_64__
+    PyDict_SetItemString(dict, "REG_RAX", PyInt_FromLong(rax));
+    PyDict_SetItemString(dict, "REG_RBX", PyInt_FromLong(rbx));
+    PyDict_SetItemString(dict, "REG_RCX", PyInt_FromLong(rcx));
+    PyDict_SetItemString(dict, "REG_RDX", PyInt_FromLong(rdx));
+    PyDict_SetItemString(dict, "REG_RDI", PyInt_FromLong(rdi));
+    PyDict_SetItemString(dict, "REG_RSI", PyInt_FromLong(rsi));
+    PyDict_SetItemString(dict, "REG_RBP", PyInt_FromLong(rbp));
+    PyDict_SetItemString(dict, "REG_RSP", PyInt_FromLong(rsp));
+    switch (num_operands) {
+        case 0:
+        break;
+        case 1:
+        PyDict_SetItemString(dict, "MEM_OP0", PyInt_FromLong(memop0));
+        break;
+        case 2:
+        PyDict_SetItemString(dict, "MEM_OP0", PyInt_FromLong(memop0));
+        PyDict_SetItemString(dict, "MEM_OP1", PyInt_FromLong(memop1));
+        break;
+        case 3:
+        PyDict_SetItemString(dict, "MEM_OP0", PyInt_FromLong(memop0));
+        PyDict_SetItemString(dict, "MEM_OP1", PyInt_FromLong(memop1));
+        PyDict_SetItemString(dict, "MEM_OP2", PyInt_FromLong(memop2));
+        break;
+    }
+    #endif
+    PyTuple_SetItem(arguments, 0, dict);
+    PyObject_CallObject(callback, arguments);
+}
+
+void INS_IPOINT_AFTER(PyObject* callback, INS ins_object, UINT32 num_operands, UINT64 rax) {
+}
+
 PyObject* Python_INS_InsertCall(PyObject* self, PyObject* args) {
-    return NULL;
+    PyObject* ins;
+    PyObject* callable;
+    PyObject* ipoint;
+
+    PyArg_ParseTuple(args, "L|L|O", &ipoint, &ins, &callable);
+    if (!PyCallable_Check(callable)) {
+        return Py_BuildValue("O", Py_False);
+    }
+
+    INS ins_object = *(INS*) ins;
+    UINT32 num_operands = INS_MemoryOperandCount(ins_object);
+    num_operands = num_operands;
+    if ((long int) ipoint == IPOINT_BEFORE) {
+        INS_InsertCall(
+            ins_object,
+            IPOINT_BEFORE,
+            (AFUNPTR) INS_IPOINT_BEFORE,
+            IARG_PTR, callable,
+            IARG_PTR, ins_object,
+            IARG_UINT32, num_operands,
+            #ifdef __i386__
+            IARG_REG_VALUE, REG_EAX,
+            IARG_REG_VALUE, REG_EBX,
+            IARG_REG_VALUE, REG_ECX,
+            IARG_REG_VALUE, REG_EDX,
+            IARG_REG_VALUE, REG_EDI,
+            IARG_REG_VALUE, REG_ESI,
+            IARG_REG_VALUE, REG_EBP,
+            IARG_REG_VALUE, REG_STACK_PTR,
+            (num_operands >= 1 ? IARG_MEMORYOP_EA : IARG_UINT32), 0,
+            (num_operands >= 2 ? IARG_MEMORYOP_EA : IARG_UINT32), 1,
+            (num_operands >= 3 ? IARG_MEMORYOP_EA : IARG_UINT32), 2,
+            #endif
+            #ifdef __x86_64__
+            IARG_REG_VALUE, REG_GAX,
+            IARG_REG_VALUE, REG_GBX,
+            IARG_REG_VALUE, REG_GCX,
+            IARG_REG_VALUE, REG_GDX,
+            IARG_REG_VALUE, REG_GDI,
+            IARG_REG_VALUE, REG_GSI,
+            IARG_REG_VALUE, REG_GBP,
+            IARG_REG_VALUE, REG_STACK_PTR,
+            (num_operands >= 1 ? IARG_MEMORYOP_EA : IARG_UINT32), 0,
+            (num_operands >= 2 ? IARG_MEMORYOP_EA : IARG_UINT32), 1,
+            (num_operands >= 3 ? IARG_MEMORYOP_EA : IARG_UINT32), 2,
+            #endif
+            IARG_END
+        );
+        return Py_BuildValue("O", Py_True);
+    } else if ((long int) ipoint == IPOINT_AFTER) {
+    }
+        return Py_BuildValue("O", Py_True);
 }
 
 PyObject* Python_INS_Category(PyObject* self, PyObject* args) {

@@ -9,6 +9,7 @@ PyObject** hooks_img_load = NULL;
 PyObject** hooks_img_unload = NULL;
 PyObject** hooks_trace_instrument = NULL;
 PyObject** hooks_instruction = NULL;
+PyObject** fini_functions = NULL;
 
 void initialize_pin_module();
 
@@ -18,9 +19,10 @@ void SyscallEntry(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOI
 void SyscallExit(THREADID threadIndex, CONTEXT *ctxt, SYSCALL_STANDARD std, VOID* v);
 PyObject* Python_PIN_AddSyscallExitFunction(PyObject* self, PyObject* args);
 PyObject* Python_PIN_AddSyscallEntryFunction(PyObject* self, PyObject* args);
-PyObject* Python_TRACE_AddInstrumentFunction(PyObject* self, PyObject* args) ;
-PyObject* Python_INS_AddInstrumentFunction(PyObject* self, PyObject* args) ;
-
+PyObject* Python_TRACE_AddInstrumentFunction(PyObject* self, PyObject* args);
+void Fini(INT32, VOID*);
+PyObject* Python_AddFiniFunction(PyObject* self, PyObject* args);
+PyObject* Python_INS_AddInstrumentFunction(PyObject* self, PyObject* args);
 
 void InstrumentFunction(RTN rtn, VOID *v);
 PyObject* Python_RTN_AddInstrumentFunction(PyObject* self, PyObject* args);
@@ -38,6 +40,10 @@ void Ins_Hook(INS ins, VOID *v);
 
 
 static PyMethodDef methods[] = {
+    {"AddFiniFunction",
+        Python_AddFiniFunction,
+        METH_VARARGS,
+      "Register a notification function that is called immediately before execution of a system call."},
     {"AddSyscallEntryFunction",
         Python_PIN_AddSyscallEntryFunction,
         METH_VARARGS,
@@ -396,6 +402,11 @@ static PyMethodDef methods[] = {
         Python_INS_AddInstrumentFunction,
         METH_VARARGS,
       "Add trace to program"
+    },
+    {"INS_InsertCall",
+        Python_INS_InsertCall,
+        METH_VARARGS,
+      "Insert a call to funptr relative to instruction ins."
     },
     {"INS_Category",
         Python_INS_Category,
