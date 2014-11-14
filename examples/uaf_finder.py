@@ -33,7 +33,6 @@ def in_use(address):
     for allocation in allocations:
         if allocation['address'] == address and allocation['in_use']:
             return True
-
     return False
 
 def malloc_before(name, size):
@@ -44,7 +43,6 @@ def malloc_after(name, address):
     global last_allocated_size
     if last_allocated_size == 0:
         return
-
     add_allocation(address, last_allocated_size)
 
 def free(name, address):
@@ -55,12 +53,12 @@ def handle_reads(ins_info):
     heap_read_addr = ins_info['MEM_OP0']
     h = a_heap_thing(heap_read_addr)
     if h and not h['in_use']:
-        print "Reading a freed object"
-
+        print "Reading a freed object!"
+        print "[UAF:" +  hex(heap_read_addr)  + "] " + " 0x%x %s" % (ins_info['IP'], ins_info['mnemonic'])
     return
 
 def ins_test(ins):
-    if pin.INS_IsMov(ins) and pin.INS_IsMemoryRead(ins):
+    if pin.INS_IsMov(ins) and (pin.INS_IsMemoryRead(ins) or pin.INS_IsMemoryWrite(ins)):
         pin.INS_InsertCall(pin.IPOINT_BEFORE, ins, handle_reads)
 
 def image_load(img):
@@ -79,7 +77,7 @@ def image_load(img):
 
 def exiting():
     global allocations
-    print allocations
+    # print allocations
 
 pin.IMG_AddInstrumentFunction(image_load)
 pin.INS_AddInstrumentFunction(ins_test)

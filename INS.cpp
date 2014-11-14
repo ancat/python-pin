@@ -37,6 +37,8 @@ void INS_IPOINT_BEFORE(PyObject* callback, INS ins_object, UINT32 num_operands, 
     PyDict_SetItemString(dict, "REG_RSI", PyInt_FromLong(rsi));
     PyDict_SetItemString(dict, "REG_RBP", PyInt_FromLong(rbp));
     PyDict_SetItemString(dict, "REG_RSP", PyInt_FromLong(rsp));
+    PyDict_SetItemString(dict, "IP", PyInt_FromLong(INS_Address(ins_object)));
+    PyDict_SetItemString(dict, "mnemonic", PyString_FromString(INS_Disassemble(ins_object).c_str()));
     switch (num_operands) {
         case 0:
         break;
