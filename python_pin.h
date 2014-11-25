@@ -1001,9 +1001,9 @@ static PyMethodDef methods[] = {
         "Write a value to a raw pointer"
     },
     {"get_pointer",
-        set_pointer,
+        get_pointer,
         METH_VARARGS,
-        "Write a value to a raw pointer"
+        "Read a value to a raw pointer"
     },
     {NULL, NULL, 0, NULL}
 };

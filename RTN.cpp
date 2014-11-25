@@ -2,9 +2,10 @@
 #include "pin.H"
 #include "RTN.h"
 
-// doesn't work right now
 PyObject* get_pointer(PyObject* self, PyObject* args) {
-    return PyInt_FromLong(102);
+    PyObject* target;
+    PyArg_ParseTuple(args, "L", &target);
+    return PyInt_FromLong(*(ADDRINT*)target);
 }
 
 PyObject* set_pointer(PyObject* self, PyObject* args) {
