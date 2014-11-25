@@ -35,26 +35,30 @@ def in_use(address):
             return True
     return False
 
-def malloc_before(name, size):
+def malloc_before(everything):
     global last_allocated_size
-    last_allocated_size = size
+    last_allocated_size = everything['arg_0']
 
-def malloc_after(name, address):
+def malloc_after(everything):
     global last_allocated_size
+    address = everything['return']
+    print 123, pin.get_pointer(everything['reg_gax']), everything['return']
     if last_allocated_size == 0:
         return
     add_allocation(address, last_allocated_size)
 
-def free(name, address):
-    mark_free(address)
+def free(everything):
+    mark_free(everything['arg_0'])
 
 def handle_reads(ins_info):
     global log_file
     heap_read_addr = ins_info['MEM_OP0']
     h = a_heap_thing(heap_read_addr)
     if h and not h['in_use']:
-        print "Reading a freed object!"
-        print "[UAF:" +  hex(heap_read_addr)  + "] " + " 0x%x %s" % (ins_info['IP'], ins_info['mnemonic'])
+        # print " 0x%x %s" % (ins_info['IP'], ins_info['mnemonic'])
+        if (ins_info['IP'] > 0):
+            print "Reading a freed object!"
+            print "UAF located at 0x%x [0x%x %s]" % (heap_read_addr, ins_info['IP'], ins_info['mnemonic'])
     return
 
 def ins_test(ins):

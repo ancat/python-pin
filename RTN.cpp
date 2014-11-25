@@ -2,35 +2,72 @@
 #include "pin.H"
 #include "RTN.h"
 
-void RTN_IPOINT_AFTER(char* name, PyObject* callback, long int return_value) {
-    PyObject* arguments = PyTuple_New(2);
-    PyTuple_SetItem(arguments, 0, PyString_FromString(name));
-    PyTuple_SetItem(arguments, 1, PyInt_FromLong(return_value));
+// doesn't work right now
+PyObject* get_pointer(PyObject* self, PyObject* args) {
+    return PyInt_FromLong(102);
+}
 
+PyObject* set_pointer(PyObject* self, PyObject* args) {
+    PyObject* target;
+    PyObject* value;
+    PyArg_ParseTuple(args, "O|O", &target, &value);
+    ADDRINT* p_target = (ADDRINT*) PyInt_AsLong(target);
+    ADDRINT p_value = (ADDRINT) PyInt_AsLong(value);
+    *p_target = p_value;
+    return Py_True;
+}
+
+void RTN_IPOINT_AFTER(char* name, PyObject* callback, long int return_value, ADDRINT* reg_gax, ADDRINT* reg_gbx, ADDRINT* reg_gcx, ADDRINT* reg_gdx, ADDRINT* reg_gbp, ADDRINT* reg_gsp, ADDRINT* reg_gdi, ADDRINT* reg_gsi) {
+    PyObject* arguments = PyTuple_New(1);
+
+    PyObject* everything = PyDict_New();
+    PyDict_SetItemString(everything, "function", PyString_FromString(name));
+    PyDict_SetItemString(everything, "return", PyInt_FromLong(return_value));
+    PyDict_SetItemString(everything, "reg_gax", Py_BuildValue("L", reg_gax));
+    PyDict_SetItemString(everything, "reg_gbx", Py_BuildValue("L", reg_gbx));
+    PyDict_SetItemString(everything, "reg_gcx", Py_BuildValue("L", reg_gcx));
+    PyDict_SetItemString(everything, "reg_gdx", Py_BuildValue("L", reg_gdx));
+    PyDict_SetItemString(everything, "reg_gbp", Py_BuildValue("L", reg_gbp));
+    PyDict_SetItemString(everything, "reg_gsp", Py_BuildValue("L", reg_gsp));
+    PyDict_SetItemString(everything, "reg_gdi", Py_BuildValue("L", reg_gdi));
+    PyDict_SetItemString(everything, "reg_gsi", Py_BuildValue("L", reg_gsi));
+
+    PyTuple_SetItem(arguments, 0, everything);
     PyObject_CallObject(callback, arguments);
 }
 
-void RTN_IPOINT_BEFORE(char* name, int num_args, PyObject* callback, long int arg0, long int arg1, long int arg2, long int arg3, long int arg4, long int arg5, long int arg6, long int arg7, long int arg8, long int arg9, long int arg10) {
-    PyObject* arguments = PyTuple_New(num_args+1);
-    PyTuple_SetItem(arguments, 0, PyString_FromString(name));
-    long int args[11];
-    args[0] = arg0;
-    args[1] = arg1;
-    args[2] = arg2;
-    args[3] = arg3;
-    args[4] = arg4;
-    args[5] = arg5;
-    args[6] = arg6;
-    args[7] = arg7;
-    args[8] = arg8;
-    args[9] = arg9;
-    args[10] = arg10;
+void RTN_IPOINT_BEFORE(char* name, int num_args, PyObject* callback, long int arg0, long int arg1, long int arg2, long int arg3, long int arg4, long int arg5, long int arg6, long int arg7, long int arg8, long int arg9, long int arg10, ADDRINT* reg_gax, ADDRINT* reg_gbx, ADDRINT* reg_gcx, ADDRINT* reg_gdx, ADDRINT* reg_gbp, ADDRINT* reg_gsp, ADDRINT* reg_gdi, ADDRINT* reg_gsi) {
+    PyObject* arguments = PyTuple_New(1);
 
-    for (int i=0; i < num_args; i++) {
-        PyTuple_SetItem(arguments, i+1, PyInt_FromLong(args[i]));
+    PyObject* everything = PyDict_New();
+    PyDict_SetItemString(everything, "function", PyString_FromString(name));
+    PyDict_SetItemString(everything, "arg_0", PyInt_FromLong(arg0));
+    PyDict_SetItemString(everything, "arg_1", PyInt_FromLong(arg1));
+    PyDict_SetItemString(everything, "arg_2", PyInt_FromLong(arg2));
+    PyDict_SetItemString(everything, "arg_3", PyInt_FromLong(arg3));
+    PyDict_SetItemString(everything, "arg_4", PyInt_FromLong(arg4));
+    PyDict_SetItemString(everything, "arg_5", PyInt_FromLong(arg5));
+    PyDict_SetItemString(everything, "arg_6", PyInt_FromLong(arg6));
+    PyDict_SetItemString(everything, "arg_7", PyInt_FromLong(arg7));
+    PyDict_SetItemString(everything, "arg_8", PyInt_FromLong(arg8));
+    PyDict_SetItemString(everything, "arg_9", PyInt_FromLong(arg9));
+    PyDict_SetItemString(everything, "arg_10", PyInt_FromLong(arg10));
+    PyDict_SetItemString(everything, "reg_gax", Py_BuildValue("L", reg_gax));
+    PyDict_SetItemString(everything, "reg_gbx", Py_BuildValue("L", reg_gbx));
+    PyDict_SetItemString(everything, "reg_gcx", Py_BuildValue("L", reg_gcx));
+    PyDict_SetItemString(everything, "reg_gdx", Py_BuildValue("L", reg_gdx));
+    PyDict_SetItemString(everything, "reg_gbp", Py_BuildValue("L", reg_gbp));
+    PyDict_SetItemString(everything, "reg_gsp", Py_BuildValue("L", reg_gsp));
+    PyDict_SetItemString(everything, "reg_gdi", Py_BuildValue("L", reg_gdi));
+    PyDict_SetItemString(everything, "reg_gsi", Py_BuildValue("L", reg_gsi));
+
+    PyTuple_SetItem(arguments, 0, everything);
+
+    if (PyObject_CallObject(callback, arguments)) {
+    } else {
+        printf("no\n");
+        PyErr_Print();
     }
-
-    PyObject_CallObject(callback, arguments);
 }
 
 PyObject* Python_RTN_InsertCall(PyObject* self, PyObject* args) {
@@ -50,7 +87,16 @@ PyObject* Python_RTN_InsertCall(PyObject* self, PyObject* args) {
         RTN_InsertCall(rtn_object, IPOINT_AFTER, (AFUNPTR) RTN_IPOINT_AFTER,
             IARG_ADDRINT, PyString_AsString(function_name),
             IARG_PTR, callable,
-            IARG_FUNCRET_EXITPOINT_VALUE, IARG_END);
+            IARG_FUNCRET_EXITPOINT_VALUE,
+            IARG_REG_REFERENCE, REG_GAX,
+            IARG_REG_REFERENCE, REG_GBX,
+            IARG_REG_REFERENCE, REG_GCX,
+            IARG_REG_REFERENCE, REG_GDX,
+            IARG_REG_REFERENCE, REG_GBP,
+            IARG_REG_REFERENCE, REG_STACK_PTR,
+            IARG_REG_REFERENCE, REG_GDI,
+            IARG_REG_REFERENCE, REG_GSI,
+            IARG_END);
     } else if ((long int) ipoint == IPOINT_BEFORE) {
         RTN_InsertCall(rtn_object, IPOINT_BEFORE, (AFUNPTR) RTN_IPOINT_BEFORE,
             IARG_ADDRINT, PyString_AsString(function_name),
@@ -67,6 +113,14 @@ PyObject* Python_RTN_InsertCall(PyObject* self, PyObject* args) {
             IARG_FUNCARG_ENTRYPOINT_VALUE, 8,
             IARG_FUNCARG_ENTRYPOINT_VALUE, 9,
             IARG_FUNCARG_ENTRYPOINT_VALUE, 10,
+            IARG_REG_REFERENCE, REG_GAX,
+            IARG_REG_REFERENCE, REG_GBX,
+            IARG_REG_REFERENCE, REG_GCX,
+            IARG_REG_REFERENCE, REG_GDX,
+            IARG_REG_REFERENCE, REG_GBP,
+            IARG_REG_REFERENCE, REG_STACK_PTR,
+            IARG_REG_REFERENCE, REG_GDI,
+            IARG_REG_REFERENCE, REG_GSI,
             IARG_END);
     } else {
         return Py_BuildValue("O", Py_False);

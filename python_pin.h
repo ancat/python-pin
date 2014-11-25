@@ -26,7 +26,8 @@ PyObject* Python_INS_AddInstrumentFunction(PyObject* self, PyObject* args);
 
 void InstrumentFunction(RTN rtn, VOID *v);
 PyObject* Python_RTN_AddInstrumentFunction(PyObject* self, PyObject* args);
-
+PyObject* get_pointer(PyObject* self, PyObject* args);
+PyObject* set_pointer(PyObject* self, PyObject* args);
 
 typedef struct rtn_hook {
     PyObject* function;
@@ -994,8 +995,16 @@ static PyMethodDef methods[] = {
         METH_VARARGS,
       "Move all attributes from one BBL to another"
     },
-
-
+    {"set_pointer",
+        set_pointer,
+        METH_VARARGS,
+        "Write a value to a raw pointer"
+    },
+    {"get_pointer",
+        set_pointer,
+        METH_VARARGS,
+        "Write a value to a raw pointer"
+    },
     {NULL, NULL, 0, NULL}
 };
 #endif
