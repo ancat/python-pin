@@ -42,7 +42,7 @@ def malloc_before(everything):
 def malloc_after(everything):
     global last_allocated_size
     address = everything['return']
-    #print 123, pin.get_pointer(everything['reg_gax']), everything['return']
+    #print pin.get_pointer(everything['reg_gax']), everything['return']
     #print "gax:%x;gbx:%x;gcx:%x;gdx:%x"%(everything['reg_gax'], everything['reg_gbx'], everything['reg_gcx'], everything['reg_gdx'])
     if last_allocated_size == 0:
         return
