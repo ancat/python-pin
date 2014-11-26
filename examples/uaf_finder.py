@@ -38,6 +38,8 @@ def in_use(address):
 def malloc_before(everything):
     global last_allocated_size
     last_allocated_size = everything['arg_0']
+    #print everything['arg_0'], hex(everything['ref_arg_0'])
+    #pin.set_pointer(everything['ref_arg_0'], 1)
 
 def malloc_after(everything):
     global last_allocated_size
@@ -66,18 +68,27 @@ def ins_test(ins):
     if pin.INS_IsMov(ins) and (pin.INS_IsMemoryRead(ins) or pin.INS_IsMemoryWrite(ins)):
         pin.INS_InsertCall(pin.IPOINT_BEFORE, ins, handle_reads)
 
+def memset_pre(everything):
+    pin.set_pointer(everything['reg_gsi'], 0x43)
+
 def image_load(img):
+    rtn = pin.RTN_FindByName(img, "memset")
+    if pin.RTN_Valid(rtn):
+        pin.RTN_Open(rtn)
+        pin.RTN_InsertCall(pin.IPOINT_BEFORE, "memset", rtn, 3, memset_pre)
+        pin.RTN_Close(rtn)
+
     rtn = pin.RTN_FindByName(img, "malloc")
     if pin.RTN_Valid(rtn):
         pin.RTN_Open(rtn)
-        pin.RTN_InsertCall(pin.IPOINT_BEFORE, "malloc", rtn, 1, malloc_before)
-        pin.RTN_InsertCall(pin.IPOINT_AFTER, "malloc", rtn, 1, malloc_after)
+        #pin.RTN_InsertCall(pin.IPOINT_BEFORE, "malloc", rtn, 1, malloc_before)
+        #pin.RTN_InsertCall(pin.IPOINT_AFTER, "malloc", rtn, 1, malloc_after)
         pin.RTN_Close(rtn)
 
     rtn = pin.RTN_FindByName(img, "free")
     if pin.RTN_Valid(rtn):
         pin.RTN_Open(rtn)
-        pin.RTN_InsertCall(pin.IPOINT_BEFORE, "malloc", rtn, 1, free)
+        #pin.RTN_InsertCall(pin.IPOINT_BEFORE, "malloc", rtn, 1, free)
         pin.RTN_Close(rtn)
 
 def exiting():

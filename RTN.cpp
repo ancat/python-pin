@@ -14,11 +14,16 @@ PyObject* set_pointer(PyObject* self, PyObject* args) {
     PyArg_ParseTuple(args, "O|O", &target, &value);
     ADDRINT* p_target = (ADDRINT*) PyInt_AsLong(target);
     ADDRINT p_value = (ADDRINT) PyInt_AsLong(value);
+    //printf("*%p = %lx\n", p_target, p_value);
     *p_target = p_value;
     return Py_True;
 }
 
-void RTN_IPOINT_AFTER(char* name, PyObject* callback, long int return_value, ADDRINT* reg_gax, ADDRINT* reg_gbx, ADDRINT* reg_gcx, ADDRINT* reg_gdx, ADDRINT* reg_gbp, ADDRINT* reg_gsp, ADDRINT* reg_gdi, ADDRINT* reg_gsi) {
+void RTN_IPOINT_AFTER(
+        char* name, PyObject* callback, long int return_value,
+        ADDRINT* reg_gax, ADDRINT* reg_gbx, ADDRINT* reg_gcx, ADDRINT* reg_gdx,
+        ADDRINT* reg_gbp, ADDRINT* reg_gsp, ADDRINT* reg_gdi, ADDRINT* reg_gsi
+    ) {
     PyObject* arguments = PyTuple_New(1);
 
     PyObject* everything = PyDict_New();
@@ -37,7 +42,15 @@ void RTN_IPOINT_AFTER(char* name, PyObject* callback, long int return_value, ADD
     PyObject_CallObject(callback, arguments);
 }
 
-void RTN_IPOINT_BEFORE(char* name, int num_args, PyObject* callback, long int arg0, long int arg1, long int arg2, long int arg3, long int arg4, long int arg5, long int arg6, long int arg7, long int arg8, long int arg9, long int arg10, ADDRINT* reg_gax, ADDRINT* reg_gbx, ADDRINT* reg_gcx, ADDRINT* reg_gdx, ADDRINT* reg_gbp, ADDRINT* reg_gsp, ADDRINT* reg_gdi, ADDRINT* reg_gsi) {
+void RTN_IPOINT_BEFORE(
+        char* name, int num_args, PyObject* callback,
+        long int arg0, long int arg1, long int arg2, long int arg3, long int arg4,
+        long int arg5, long int arg6, long int arg7, long int arg8, long int arg9, long int arg10,
+        ADDRINT* ref_arg0, ADDRINT* ref_arg1, ADDRINT* ref_arg2, ADDRINT* ref_arg3, ADDRINT* ref_arg4,
+        ADDRINT* ref_arg5, ADDRINT* ref_arg6, ADDRINT* ref_arg7, ADDRINT* ref_arg8, ADDRINT* ref_arg9, ADDRINT* ref_arg10,
+        ADDRINT* reg_gax, ADDRINT* reg_gbx, ADDRINT* reg_gcx, ADDRINT* reg_gdx,
+        ADDRINT* reg_gbp, ADDRINT* reg_gsp, ADDRINT* reg_gdi, ADDRINT* reg_gsi
+    ) {
     PyObject* arguments = PyTuple_New(1);
 
     PyObject* everything = PyDict_New();
@@ -53,6 +66,17 @@ void RTN_IPOINT_BEFORE(char* name, int num_args, PyObject* callback, long int ar
     PyDict_SetItemString(everything, "arg_8", PyInt_FromLong(arg8));
     PyDict_SetItemString(everything, "arg_9", PyInt_FromLong(arg9));
     PyDict_SetItemString(everything, "arg_10", PyInt_FromLong(arg10));
+    PyDict_SetItemString(everything, "ref_arg_0", PyInt_FromLong((long int) ref_arg0));
+    PyDict_SetItemString(everything, "ref_arg_1", PyInt_FromLong((long int) ref_arg1));
+    PyDict_SetItemString(everything, "ref_arg_2", PyInt_FromLong((long int) ref_arg2));
+    PyDict_SetItemString(everything, "ref_arg_3", PyInt_FromLong((long int) ref_arg3));
+    PyDict_SetItemString(everything, "ref_arg_4", PyInt_FromLong((long int) ref_arg4));
+    PyDict_SetItemString(everything, "ref_arg_5", PyInt_FromLong((long int) ref_arg5));
+    PyDict_SetItemString(everything, "ref_arg_6", PyInt_FromLong((long int) ref_arg6));
+    PyDict_SetItemString(everything, "ref_arg_7", PyInt_FromLong((long int) ref_arg7));
+    PyDict_SetItemString(everything, "ref_arg_8", PyInt_FromLong((long int) ref_arg8));
+    PyDict_SetItemString(everything, "ref_arg_9", PyInt_FromLong((long int) ref_arg9));
+    PyDict_SetItemString(everything, "ref_arg_10", PyInt_FromLong((long int) ref_arg10));
     PyDict_SetItemString(everything, "reg_gax", Py_BuildValue("L", reg_gax));
     PyDict_SetItemString(everything, "reg_gbx", Py_BuildValue("L", reg_gbx));
     PyDict_SetItemString(everything, "reg_gcx", Py_BuildValue("L", reg_gcx));
@@ -114,6 +138,17 @@ PyObject* Python_RTN_InsertCall(PyObject* self, PyObject* args) {
             IARG_FUNCARG_ENTRYPOINT_VALUE, 8,
             IARG_FUNCARG_ENTRYPOINT_VALUE, 9,
             IARG_FUNCARG_ENTRYPOINT_VALUE, 10,
+            IARG_FUNCARG_ENTRYPOINT_REFERENCE, 0,
+            IARG_FUNCARG_ENTRYPOINT_REFERENCE, 1,
+            IARG_FUNCARG_ENTRYPOINT_REFERENCE, 2,
+            IARG_FUNCARG_ENTRYPOINT_REFERENCE, 3,
+            IARG_FUNCARG_ENTRYPOINT_REFERENCE, 4,
+            IARG_FUNCARG_ENTRYPOINT_REFERENCE, 5,
+            IARG_FUNCARG_ENTRYPOINT_REFERENCE, 6,
+            IARG_FUNCARG_ENTRYPOINT_REFERENCE, 7,
+            IARG_FUNCARG_ENTRYPOINT_REFERENCE, 8,
+            IARG_FUNCARG_ENTRYPOINT_REFERENCE, 9,
+            IARG_FUNCARG_ENTRYPOINT_REFERENCE, 10,
             IARG_REG_REFERENCE, REG_GAX,
             IARG_REG_REFERENCE, REG_GBX,
             IARG_REG_REFERENCE, REG_GCX,
