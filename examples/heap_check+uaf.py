@@ -14,7 +14,6 @@ def malloc_before(everything):
     global last_allocated_size
     last_allocated_size = everything['arg_0']
     print "MALLOCING: " + hex(everything['arg_0'])
-    new_size = guard_size*2+last_allocated_size
     pin.set_pointer(everything['reg_gdi'], pin.get_pointer(everything['reg_gdi'])+guard_size*2)
 
 def malloc_after(everything):
@@ -31,7 +30,6 @@ def malloc_after(everything):
     pin.set_pointer(pin.get_pointer(everything['reg_gax'])+8+last_allocated_size+32+8, canary)
     pin.set_pointer(pin.get_pointer(everything['reg_gax'])+16+last_allocated_size+32+8, canary)
     pin.set_pointer(pin.get_pointer(everything['reg_gax'])+24+last_allocated_size+32+8, canary)
-
     pin.set_pointer(everything['reg_gax'], pin.get_pointer(everything['reg_gax'])+guard_size)
     
 def free(everything):
@@ -51,8 +49,6 @@ def realloc_before(everything):
     else:
         name = pin.get_pointer(everything["reg_gdi"])
         size = pin.get_pointer(everything["reg_gsi"])
-        print name
-        print size
         if((size) == 0):
             pin.set_pointer(everything['reg_gdi'], 0)
             pin.set_pointer(everything['reg_gsi'], 0)
@@ -77,7 +73,6 @@ def realloc_after(everything):
         pin.set_pointer(pin.get_pointer(everything['reg_gax'])+8+last_allocated_size+32+8, canary)
         pin.set_pointer(pin.get_pointer(everything['reg_gax'])+16+last_allocated_size+32+8, canary)
         pin.set_pointer(pin.get_pointer(everything['reg_gax'])+24+last_allocated_size+32+8, canary)
-
         pin.set_pointer(everything['reg_gax'], pin.get_pointer(everything['reg_gax'])+40)
     real = 0
 
