@@ -65,9 +65,6 @@ def realloc_before(everything):
             real = 1
         hit = 1
 
-
-
-
 def realloc_after(everything):
     global real
     if real == 1:
@@ -93,8 +90,6 @@ def handle_write(ins_info):
     for i in free_list:
         if heap_read_addr in range(i[0], i[0]+i[1]):            
             print "UAF located at 0x%x [0x%x %s]" % (heap_read_addr, ins_info['IP'], ins_info['mnemonic'])
-
-
 
 def ins_test(ins):
     if pin.INS_IsMemoryWrite(ins):
