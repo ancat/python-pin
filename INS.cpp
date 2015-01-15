@@ -2,7 +2,7 @@
 #include "pin.H"
 #include "INS.h"
 
-void INS_IPOINT_BEFORE(PyObject* callback, INS ins_object, UINT32 num_operands, unsigned int rax, unsigned int rbx, unsigned int rcx, unsigned int rdx, unsigned int rdi, unsigned int rsi, unsigned int rbp, unsigned int rsp, unsigned int memop0, unsigned int memop1, unsigned int memop2) {
+void INS_IPOINT_BEFORE(PyObject* callback, INS ins_object, UINT32 num_operands, unsigned int rax, unsigned int rbx, unsigned int rcx, unsigned int rdx, unsigned int rdi, unsigned int rsi, unsigned int rbp, unsigned int rsp, UINT64 memop0, unsigned int memop1, unsigned int memop2, unsigned int ea) {
     PyObject* dict = PyDict_New();
     PyObject* arguments = PyTuple_New(1);
 
@@ -29,6 +29,21 @@ void INS_IPOINT_BEFORE(PyObject* callback, INS ins_object, UINT32 num_operands, 
 
     #endif
     #ifdef __x86_64__
+
+    ADDRINT k = 0;
+
+    PIN_LockClient();
+    IMG img = IMG_FindByAddress(INS_Address(ins_object));
+    PIN_UnlockClient();
+
+    if (IMG_Valid(img) && IMG_IsMainExecutable(img)){
+        if (INS_OperandCount(ins_object) > 1 && INS_MemoryOperandIsWritten(ins_object, 0)){
+           k = *(ADDRINT*)memop0;
+        }
+    }
+    
+
+    PyDict_SetItemString(dict, "VAL", PyInt_FromLong(k));
     PyDict_SetItemString(dict, "REG_RAX", PyInt_FromLong(rax));
     PyDict_SetItemString(dict, "REG_RBX", PyInt_FromLong(rbx));
     PyDict_SetItemString(dict, "REG_RCX", PyInt_FromLong(rcx));
@@ -38,6 +53,7 @@ void INS_IPOINT_BEFORE(PyObject* callback, INS ins_object, UINT32 num_operands, 
     PyDict_SetItemString(dict, "REG_RBP", PyInt_FromLong(rbp));
     PyDict_SetItemString(dict, "REG_RSP", PyInt_FromLong(rsp));
     PyDict_SetItemString(dict, "IP", PyInt_FromLong(INS_Address(ins_object)));
+    PyDict_SetItemString(dict, "EA", PyInt_FromLong(ea));
     PyDict_SetItemString(dict, "mnemonic", PyString_FromString(INS_Disassemble(ins_object).c_str()));
     switch (num_operands) {
         case 0:
@@ -62,6 +78,7 @@ void INS_IPOINT_BEFORE(PyObject* callback, INS ins_object, UINT32 num_operands, 
 
 void INS_IPOINT_AFTER(PyObject* callback, INS ins_object, UINT32 num_operands, UINT64 rax) {
 }
+
 
 PyObject* Python_INS_InsertCall(PyObject* self, PyObject* args) {
     PyObject* ins;
@@ -110,6 +127,7 @@ PyObject* Python_INS_InsertCall(PyObject* self, PyObject* args) {
             (num_operands >= 2 ? IARG_MEMORYOP_EA : IARG_UINT32), 1,
             (num_operands >= 3 ? IARG_MEMORYOP_EA : IARG_UINT32), 2,
             #endif
+            IARG_MEMORYWRITE_EA ,
             IARG_END
         );
         return Py_BuildValue("O", Py_True);
@@ -1377,5 +1395,3 @@ PyObject* Python_INS_MemoryOperandIndexToOperandIndex(PyObject* self, PyObject* 
     UINT32 memopidx_object = (UINT32) PyInt_AsLong(memopidx);
     return Py_BuildValue("L", INS_MemoryOperandIndexToOperandIndex(ins_object, memopidx_object));
 }
-
-

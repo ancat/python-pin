@@ -19,6 +19,7 @@ PyObject* set_pointer(PyObject* self, PyObject* args) {
     return Py_True;
 }
 
+
 void RTN_IPOINT_AFTER(
         char* name, PyObject* callback, long int return_value,
         ADDRINT* reg_gax, ADDRINT* reg_gbx, ADDRINT* reg_gcx, ADDRINT* reg_gdx,
@@ -107,6 +108,7 @@ PyObject* Python_RTN_InsertCall(PyObject* self, PyObject* args) {
         return Py_BuildValue("O", Py_False);
     }
 
+    //cout << "function_name: " << PyString_AsString(function_name) << endl;
     RTN rtn_object = *(RTN*) rtn;
     if ((long int) ipoint == IPOINT_AFTER) {
         RTN_InsertCall(rtn_object, IPOINT_AFTER, (AFUNPTR) RTN_IPOINT_AFTER,
@@ -401,4 +403,3 @@ PyObject* Python_RTN_IsSafeForProbedReplacementEx(PyObject* self, PyObject* args
         return Py_BuildValue("O", Py_False);
     }
 }
-
