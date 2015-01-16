@@ -70,12 +70,11 @@ ADDRINT ac_re = 0;
 ADDRINT canary =  0x0f0f0f0f0f0f0f0f;
 ADDRINT canary2 = 0xf0f0f0f0f0f0f0f0;
 
-struct uaf{
+typedef struct{
     ADDRINT address;
     ADDRINT size;
-};
+}UAF;
 
-typedef uaf UAF;
 vector<UAF*> free_list;
 /* ===================================================================== */
 /* Commandline Switches */
