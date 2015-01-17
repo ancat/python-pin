@@ -10,7 +10,8 @@ new_size = 0
 log_file = open('uaf.txt', 'w')
 low = -1
 high = -1
-canary = 0x4141414141414141
+canary  = 0x0f0f0f0f0f0f0f0f
+canary2 = 0xf0f0f0f0f0f0f0f0
 k = 0
 
 def malloc_before(everything):
@@ -92,7 +93,7 @@ def handle_write(ins_info):
     global low,high
     heap_read_addr = ins_info['MEM_OP0']
     x = ins_info['VAL']
-    if x == canary:
+    if x == canary or x == canary2:
         print "HEAP OVERFLOW located at 0x%x [%s]" % (heap_read_addr, ins_info['mnemonic'])
 
     if heap_read_addr >= low and heap_read_addr <= high and high != -1 and low != -1:
