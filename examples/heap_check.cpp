@@ -150,6 +150,7 @@ VOID MallocAfter(CHAR * name, ADDRINT* rax_reg)
 
 VOID free_1(CHAR * name, ADDRINT size, ADDRINT* val)
 {
+   if(*val == 0) return;
     ADDRINT k = *(ADDRINT*)(*val-40);
     UAF *tmp = new UAF();
     tmp->address = (ADDRINT)(*val-40);
